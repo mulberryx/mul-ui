@@ -1,0 +1,101 @@
+.datepicker {
+    position: relative;
+    width: 100%;
+    min-height: 150px;
+    overflow: hidden;
+
+    .wrapper {
+        position: relative;
+        top: 0px;
+        height: 150px;
+        width: 14%;
+        text-align: center;
+        float: left;
+
+        .item {
+            height: 50px;
+            line-height: 50px;
+            width: 100%;
+            background: transparent;
+            color: rgba(0, 0, 0, 0.6);
+            font-size: 14px;
+            text-align: center;
+        }   
+
+        .item .val {
+            vertical-align: top;
+            margin-right: 1px;
+        }
+
+        .item.disabled {
+            display: none;
+        }
+
+        .item.active {
+            color: #50b1f4;
+        }
+
+        .container {
+            width: 100%;
+            z-index: 6;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-text-size-adjust: none;
+            -moz-text-size-adjust: none;
+            -ms-text-size-adjust: none;
+            -o-text-size-adjust: none;
+            text-size-adjust: none;
+            -webkit-perspective: 1000; 
+            -moz-perspective: 1000; 
+            -ms-perspective: 1000; 
+            perspective: 1000;     
+            background: transparent;
+        }  
+        
+        &.week {
+            text-align: left;
+        }
+
+        &.yyyy {
+            width: 16%;
+        }
+
+        .item .val {
+            vertical-align: top;
+            margin-right: 1px;
+        }
+
+        .item.active .val {
+            font-size: 22px;
+        }
+
+        &.yyyy .item.active .val {
+            font-size: 18px;
+        }
+
+        &.week .item.active .val {
+            font-size: 14px;
+        }        
+    }
+
+    .date-mark {
+        position: absolute;
+        border-top: 1px solid #59baf5;
+        border-bottom: 1px solid #59baf5;
+        top: 50px;
+        left: 0;
+        right: 0;    
+        height: 50px;
+        background: #ecf9ff;
+        font-size: 18px;
+        z-index: 0;
+    }      
+}
