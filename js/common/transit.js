@@ -3,7 +3,7 @@
  * @author MulberryX
  */
 
-import AnimationFrame from '../common/animation-frame';
+import Animation from '../common/animation';
 
 // 渐进过程的描述函数
 let easing = {
@@ -87,7 +87,7 @@ class Transit {
         this.coefficient = 0;
 
         this.ins = 16.7 / this.duration;
-        this.animationFrame = new AnimationFrame();
+        this.animationFrame = new Animation();
 
         this.transiting = false;
 

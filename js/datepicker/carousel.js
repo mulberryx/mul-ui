@@ -25,7 +25,7 @@ export default class Carousel {
         this.onScrollEnd = options.onScrollEnd;
         this.onSnapChange = options.onSnapChange;
 
-        this.snapHeight = this.container.children[0].offsetHeight || 50;
+        this.snapHeight = 50;
 
         this.currMove = options.currMove || 0;
         this.currSnapIdx = (this.snapHeight - this.currMove) / this.snapHeight;
@@ -40,7 +40,7 @@ export default class Carousel {
 
     /**
      * 初始化
-     * @return none
+     * @returns none
      */
     init () {
 
@@ -109,7 +109,7 @@ export default class Carousel {
      * @param {number} 位移
      * @param {number} 过渡的速度
      * @param {boolean} 是否过渡        
-     * @return none
+     * @returns none
      */
     scroll (offset, transition, speed) {
         let container_height = this.container.offsetHeight || 50;
@@ -170,7 +170,7 @@ export default class Carousel {
      * 移动
      * @param {number||undefined} 位移值
      * @param {boolean} 是否处理栅格变化 
-     * @return none
+     * @returns none
      */
     move (distance, snapChange) {
         let _distance;
@@ -191,7 +191,7 @@ export default class Carousel {
     /**
      * 栅格变化
      * @param {number} 移动之前的值 
-     * @return none
+     * @returns none
      */
     snapChange (currMove) {
         let idx = this.calculateSnap(currMove);
@@ -210,7 +210,7 @@ export default class Carousel {
     /**
      * 检查栅格变化
      * @param {number} 移动之前的值 
-     * @return {number} 当前栅格所在位置
+     * @returns {number} 当前栅格所在位置
      */
     calculateSnap (_currMove) { 
         let currSnapIdx = (this.snapHeight - this.currMove) / this.snapHeight;
@@ -279,7 +279,7 @@ export default class Carousel {
 
     /**
      * 捕捉栅格
-     * @return none
+     * @returns none
      */
     keepSnap () {
         this.currMove = this.getSnapValue(this.currMove, true);
@@ -290,7 +290,7 @@ export default class Carousel {
      * 栅格化位移
      * @param {number} 原始位移
      * @param {boolean} 是否有边界过滤 
-     * @return {number} 栅格化的位移
+     * @returns {number} 栅格化的位移
      */
     getSnapValue (offset, boundary) {
         let _offset = offset;
@@ -325,7 +325,7 @@ export default class Carousel {
 
     /**
      * 获取第一个节点的偏移量
-     * @return {number} 第一个节点的偏移量
+     * @returns {number} 第一个节点的偏移量
      */
     getFirstItemOffset () {
         return this.activeItemNum % 2 ? parseInt(this.activeItemNum / 2) : parseInt(this.activeItemNum / 2) - 1;
@@ -333,7 +333,7 @@ export default class Carousel {
 
     /**
      * 获取最后一个节点的偏移量
-     * @return {number} 最后一个节点的偏移量
+     * @returns {number} 最后一个节点的偏移量
      */    
     getLastItemOffset () {
         return parseInt(this.activeItemNum / 2);        
@@ -341,7 +341,7 @@ export default class Carousel {
 
     /**
      * 获取最后一个节点的偏移量
-     * @return {number} 最后一个节点的偏移量
+     * @returns {number} 最后一个节点的偏移量
      */
     getMiddleIndex () {
         return Math.ceil(this.activeItemNum / 2) - 1;
@@ -350,7 +350,7 @@ export default class Carousel {
     /**
      * 滚动至一个节点(snap)
      * @param {number} 节点下标
-     * @return none
+     * @returns none
      */
     scrollTo (idx) {
         this.move(( idx - 1 ) * -50, false);

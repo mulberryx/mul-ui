@@ -1,6 +1,6 @@
 "use strict";
 
-import { WEEK_CN, NUMBER_CN, LEEP_MONTH, NATURE_LIMITS } from '../common/base';
+import { WEEK_CN, NUMBER_CN, LEEP_MONTH, NATURE_LIMITS } from '../common/const';
 import Carousel from './carousel';
 
 /*
@@ -78,7 +78,7 @@ class Datepicker {
 
     /**
      * 初始化
-     * @return none
+     * @returns none
      */
     init () {
         this.basicData();
@@ -92,7 +92,7 @@ class Datepicker {
 
     /**
      * 初始化基础参数
-     * @return none
+     * @returns none
      */
     basicData () {
         let columnNumber = 0;
@@ -185,7 +185,7 @@ class Datepicker {
 
     /**
      * 创建节点
-     * @return none
+     * @returns none
      */
     createElements () {
 
@@ -296,7 +296,7 @@ class Datepicker {
 
     /**
      * 初始化滚动列
-     * @return none
+     * @returns none
      */
     initScrolls () {
         if(this.config.format.indexOf('yyyy') !== -1) {
@@ -326,7 +326,7 @@ class Datepicker {
 
     /**
      * 初始化年滚动
-     * @return none
+     * @returns none
      */
     initYear () {
         let _this = this;
@@ -410,7 +410,7 @@ class Datepicker {
 
     /**
      * 初始化月份滚动
-     * @return none
+     * @returns none
      */
     initMonth () {
         let _this = this;
@@ -487,7 +487,7 @@ class Datepicker {
 
     /**
      * 初始化日期滚动
-     * @return none
+     * @returns none
      */
     initDay () {
         let _this = this;
@@ -564,7 +564,7 @@ class Datepicker {
 
     /**
      * 初始化小时滚动
-     * @return none
+     * @returns none
      */
     initHour () {
         let _this = this;
@@ -641,7 +641,7 @@ class Datepicker {
 
     /**
      * 初始化分钟滚动
-     * @return none
+     * @returns none
      */
     initMinute () {
         let _this = this;
@@ -717,7 +717,7 @@ class Datepicker {
 
     /**
      * 初始化秒滚动
-     * @return none
+     * @returns none
      */
     initSecond () {
         let _this = this;
@@ -795,7 +795,7 @@ class Datepicker {
     /**
      * 让所有数据同步
      * @param { Boolean } 是否需要同步数据 
-     * @return none
+     * @returns none
      */
     apply (syn) {
         if(syn) {
@@ -813,7 +813,7 @@ class Datepicker {
      * 激活的节点脏检查
      * @param {String} {yyyy || MM ..}
      * @param {String || Number} 当前值
-     * @return none
+     * @returns none
      */
     dirty () { 
         let limits = this.limits;
@@ -845,7 +845,7 @@ class Datepicker {
 
     /**
      * 时间变化，其余系统变化
-     * @return none
+     * @returns none
      */
     synData () {
         let year = this.getValue('yyyy');
@@ -872,7 +872,7 @@ class Datepicker {
      * 设置当前选择下标
      * @param {String} {yyyy || MM ..}
      * @param {Number || String} 当前值
-     * @return none
+     * @returns none
      */
     setValue (type, val) {
         if(this.config.format.indexOf(type) === -1 && type !== 'week') {
@@ -921,7 +921,7 @@ class Datepicker {
     /**
      * 获取当前选中值
      * @param {String} {yyyy || MM ..}
-     * @return none
+     * @returns none
      */
     getValue (type) {
         let val;
@@ -952,7 +952,7 @@ class Datepicker {
      * @param {String} {yyyy || MM ..}
      * @param {String || Number} 当前值
      * @param {String || Number} 当前下标
-     * @return none
+     * @returns none
      */
     snapChange (type, val, idx) {
         let snaps = this.containers[type] ? this.containers[type].children : [];
@@ -980,7 +980,7 @@ class Datepicker {
      * 获取当前选择下标
      * @param { String } { yyyy || MM .. }
      * @param { String || Number } 当前值
-     * @return none
+     * @returns none
      */
     activate (type, idx) {
         let snaps = this.containers[type].children;
@@ -998,7 +998,7 @@ class Datepicker {
      * 设置可用节点数量
      * @param { String } 节点类型 
      * @param { Number } 可用节点数量  
-     * @return none
+     * @returns none
      */
     setActiveItemNum (type, value) { 
         this.activeItemNum[type] = value;
@@ -1008,7 +1008,7 @@ class Datepicker {
     /**
      * 获取第一个节点的偏移量
      * @param { String } 节点类型 
-     * @return { Number } 第一个节点的偏移量
+     * @returns { Number } 第一个节点的偏移量
      */
     getFirstItemOffset (type) { 
         let snapsNum = this.activeItemNum[type];
@@ -1018,7 +1018,7 @@ class Datepicker {
     /**
      * 获取最后一个节点的偏移量
      * @param { String } 节点类型 
-     * @return { Number } 最后一个节点的偏移量
+     * @returns { Number } 最后一个节点的偏移量
      */
     getLastItemOffset (type) { 
         let snapsNum = this.activeItemNum[type];
@@ -1028,7 +1028,7 @@ class Datepicker {
     /**
      * 获取最后一个节点的偏移量
      * @param { String } 节点类型 
-     * @return { Number } 最后一个节点的偏移量
+     * @returns { Number } 最后一个节点的偏移量
      */
     getMiddleIndex (type) { 
         let snapsNum = this.activeItemNum[type];
@@ -1039,7 +1039,7 @@ class Datepicker {
 
     /**
      * 时间值区间变化
-     * @return none
+     * @returns none
      */
     synLimits () { 
         let year = this.currDate.getFullYear();
@@ -1163,7 +1163,7 @@ class Datepicker {
     /**
      * 值反馈至view
      * @param { Number(7)} 年，月，日，星期几，时，分，秒 
-     * @return none
+     * @returns none
      */
     synView () {
         let _arguments = arguments;
@@ -1205,7 +1205,7 @@ class Datepicker {
     /**
      * 设置限制开始值
      * @param { Number | String } 时间戳 | 符合格式的字符串
-     * @return none
+     * @returns none
      */
     setBeginDate (beginDate) {
         if(!beginDate) {
@@ -1225,7 +1225,7 @@ class Datepicker {
     /**
      * 设置限制结束值
      * @param { Number | String } 时间戳 | 符合格式的字符串
-     * @return none
+     * @returns none
      */
     setEndDate (endDate) {
         if(!endDate) {
@@ -1245,7 +1245,7 @@ class Datepicker {
     /**
      * 获取或者设置值
      * @param { Number | String } 时间戳 | 符合格式的字符串
-     * @return { Number | Datepicker } 时间戳 | 日期控件
+     * @returns { Number | Datepicker } 时间戳 | 日期控件
      */
     value (value) {
         if(value) {
@@ -1268,7 +1268,7 @@ class Datepicker {
     /**
      * 添加控件值变更监听
      * @param { Function } 值变更回调
-     * @return none
+     * @returns none
      */
     addListener (event, func) {
         this.onChange = func;
@@ -1278,7 +1278,7 @@ class Datepicker {
 /**
  * 添加控件值变更监听
  * @param { Object } 日期控件配置
- * @return { Datepicker } 日期选择控件
+ * @returns { Datepicker } 日期选择控件
  */
 Datepicker.create = function (options) {
     return new Datepicker(options);

@@ -18,7 +18,7 @@ export default class Drag {
 
     /**
      * 初始化
-     * @return none
+     * @returns none
      */
     init () {
 

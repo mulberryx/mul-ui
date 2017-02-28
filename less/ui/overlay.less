@@ -10,7 +10,34 @@
     border: 1px solid #3085b7;
     background: #fff;
     border-radius: 3px;
-    z-index: 61;   
+    z-index: 61; 
+    display: none;
+
+    &.open {
+        display: block;
+    }  
+
+    &.picker {
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: -13rem;
+        height: 13rem;
+        border: none;
+        transition: bottom 1s ease-out;
+        -moz-transition: bottom 1s ease-out; 
+        -webkit-transition: bottom 1s ease-out;
+        -o-transition: bottom 1s ease-out; 
+        border-radius: 0;
+
+        &.open {
+            bottom: 0;            
+        }
+
+        .ui-overlay-close {
+            display: none;
+        }
+    }
 
     .ui-overlay-close {
         position: absolute;
@@ -26,5 +53,13 @@
         background: #3085b7;
         color: #fff;     
         cursor: pointer;
+    }
+
+    .ui-overlay-footer {
+        position: absolute;
+        bottom: 0;
+        margin: 10px 0;
+        text-align: center;
+        width: 100%;        
     }
 }

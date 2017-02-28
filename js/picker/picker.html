@@ -1,0 +1,12 @@
+<div class="ui-picker">
+    <div class="ui-picker-center-highlight"></div>
+    <% for ( var i = 0; i < cols.length; i++ ) { %>
+    <div class="ui-picker-items-col ui-picker-items-col-center">
+        <ul class="ui-picker-items-col-wrapper">
+            <% for ( var j = 0; j < cols[i].rows.length; j++ ) { %>
+            <li class="ui-picker-item" data-picker-value="<%=cols[i].rows[j].value%>"><%=cols[i].rows[j].text%></li>
+            <% } %>
+        </ul>
+    </div>
+    <% } %>
+</div>
