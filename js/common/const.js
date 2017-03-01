@@ -22,6 +22,16 @@ export let LEEP_MONTH = {
     12: true
 };
 
+export let DATE_UNITS = {
+    yyyy: '年',
+    MM: '月',
+    dd: '日',
+    week: '星期',
+    HH: '时',
+    mm: '分',
+    ss: '秒'
+};
+
 // 时间的边界
 export let NATURE_LIMITS = {
     yyyy: [false, false],

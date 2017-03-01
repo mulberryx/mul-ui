@@ -1,23 +1,11 @@
-import Overlay from '../js/overlay';
-import Datepicker from '../js/datepicker';
-import Picker from '../js/picker';
-
 /**
  * 示例文件
  * @author MulberryX
  */
 
-/**
- * 日期选择
- */
-Datepicker.create({
-    id: "datepicker1",
-    currDate: new Date('2016/06/10 11:30'),
-    beginDate: new Date('1990/12/12 10:00'),
-    endDate: new Date('2050/12/12 10:05'),
-    format: 'yyyy/MM/dd HH:mm'
-});
-
+import Overlay from '../js/overlay';
+import Picker from '../js/picker';
+import Datepicker from '../js/datepicker';
 
 /**
  * 半浮层
@@ -26,7 +14,7 @@ $('#half-popup').click(function () {
     Overlay.create({
         mask: true,
         picker: true,
-        close: true
+        closeIcon: false
     }).open(); 
 });
 
@@ -37,7 +25,7 @@ $('#popup').click(function () {
     Overlay.create({
         mask: true,
         type: 'popup',
-        close: true
+        closeIcon: true
     }).open();
 });
 
@@ -48,7 +36,7 @@ $('#alert').click(function () {
     Overlay.alert({
         mask: true,
         type: 'popup',
-        close: false,
+        closeIcon: false,
         message: 'hello, 我是一个提示窗口'
     });
 });
@@ -60,7 +48,7 @@ $('#confirm').click(function () {
     Overlay.confirm({
         mask: true,
         type: 'popup',
-        close: false,
+        closeIcon: false,
         message: 'hello, 我是一个确认窗口'
     });
 });
@@ -68,79 +56,71 @@ $('#confirm').click(function () {
 /**
  * picker 平铺
  */
-
 let picker = new Picker({
     container: 'picker',
-    cols: [
-        {
-            rows: [{
-                text: '赵',
-                value: 0
-            },{
-                text: '钱',
-                value: 1
-            },{
-                text: '孙',
-                value: 2
-            },{
-                text: '李',
-                value: 3
-            },{
-                text: '周',
-                value: 4
-            },{
-                text: '吴',
-                value: 5
-            },{
-                text: '郑',
-                value: 6
-            },{
-                text: '王',
-                value: 8
-            },{
-                text: '陈',
-                value: 9
-            },{
-                text: '林',
-                value: 10
-            },{
-                text: '严',
-                value: 11
-            },{
-                text: '程',
-                value: 12
-            }],
-            textAlign: 'center',
-            defaultvalue: 7
+    cols: [{
+        rows: [{
+            text: '赵',
+            value: 0
+        },{
+            text: '钱',
+            value: 1
+        },{
+            text: '孙',
+            value: 2
+        },{
+            text: '李',
+            value: 3
+        },{
+            text: '周',
+            value: 4
+        },{
+            text: '吴',
+            value: 5
+        },{
+            text: '郑',
+            value: 6
+        },{
+            text: '王',
+            value: 7
+        },{
+            text: '陈',
+            value: 8
+        },{
+            text: '林',
+            value: 9
+        },{
+            text: '严',
+            value: 10
+        },{
+            text: '程',
+            value: 11
+        }]
+    }, {
+        rows: [{
+            text: '杰伦',
+            value: 0
+        },{
+            text: '磊',
+            value: 1
+        },{
+            text: '明',
+            value: 2
+        },{
+            text: '鹏',
+            value: 3
+        }]
+    },
+    {
+        rows: [{
+            text: '先生',
+            value: 0
         }, {
-            rows: [{
-                text: '杰伦',
-                value: 0
-            },{
-                text: '磊',
-                value: 1
-            },{
-                text: '明',
-                value: 2
-            },{
-                text: '鹏',
-                value: 3
-            }],
-            textAlign: 'center',
-            defaultvalue: 2
-        },
-        {
-            rows: [{
-                text: '先生',
-                value: 0
-            }, {
-                text: '小姐',
-                value: 1          
-            }],
-            textAlign: 'center',
-            defaultvalue: 0     
-        }
-    ],
+            text: '小姐',
+            value: 1          
+        }]
+    }],
+    defaultvalue: [7, 2, 1],
     onChange: function (value) {
         console.log(value);
     }
@@ -150,4 +130,13 @@ let picker = new Picker({
  * picker 浮层
  */
 
-// let picker2 = new Picker();
+let datepicker = new Datepicker({
+    id: 'datepicker',
+    defaultvalue: '2014/06/07 00:00:00',
+    beginDate: '2014/03/07 00:00:00',
+    endDate: '2019/12/07 00:00:00',
+    format: 'yyyy/MM/dd HH:mm:dd',
+    onChange: function (val) {
+        console.log(val);
+    }
+});

@@ -9,16 +9,16 @@ import confirmTemplate from 'html-loader!./templates/confirm.html';
  * 浮层
  * @Class
  * @options: {
-        mask：   {boolean} 是否显示浮层遮罩
-        close：  {boolean} 是否显示关闭按钮
-        picker:  {boolean} 是否是选择弹出窗
+        mask：{boolean} 是否显示浮层遮罩
+        picker: {boolean} 是否是选择弹出窗
         content：{string} 弹出窗口的内容
-        onInit:  {function} 初始化钩子函数
+        onInit: {function} 初始化钩子函数
         onClose：{function} 关闭窗口回调
+        closeIcon: {boolean} 是否显示关闭icon
    }
  */
 
-var $body = $(document.body);
+let $body = $(document.body);
 
 class Overlay {
     /**
@@ -26,21 +26,30 @@ class Overlay {
      * @param {object} 配置对象     
      */    
     constructor (options) {
-        this.content = options.content;
-        this.picker = options.picker;
         this.mask = options.mask;
+        this.picker = options.picker;
+        this.content = options.content;
+        this.closeIcon = options.closeIcon;
         this.onClose = options.onClose;
         this.onInit = options.onInit;
         this.isOpen = false;
+
+        this.create();
+    }
+
+    /**
+     * 构建元素和事件
+     * @returns none
+     */
+    create () {
+        let self = this;
 
         this.ele = $('<div class="ui-overlay"></div>');
         this.ele.html(this.content);
 
         $body.append(this.ele);
 
-        let self = this;
-
-        if ( this.picker ) {
+        if (this.picker) {
             this.ele.addClass('picker');
 
             tools.addEventListener(EVENTS['ACTION:MASK:CLICK'], function () {
@@ -50,18 +59,18 @@ class Overlay {
             });
         }
 
-        if ( options.close ) {
-            this.closeBtn = $('<div class="ui-overlay-close">X</div>');
+        if (this.close) {
+            this.closeBtn = $('<div class="ui-overlay-close" data-role="close">X</div>');
             this.ele.append(this.closeBtn);
-
-            this.closeBtn.click(function () {
-                self.close();
-            });
         }
 
-        if ( this.onInit && typeof this.onInit === 'function' ) {
+        this.ele.on('click', '[data-role=close]', function (e) {
+            self.close();
+        });
+
+        if (this.onInit && typeof this.onInit === 'function') {
             this.onInit.apply(this);
-        }        
+        }         
     }
 
     /**
@@ -118,11 +127,20 @@ class Overlay {
     }
 
     /**
+     * 找到浮层中的子节点
+     * @param {string} css选择器 
+     * @returns {jquery} 子节点对象
+     */
+    findElement(cssQuery) {
+        return this.ele.find(cssQuery);
+    }
+
+    /**
      * 移除弹出窗 
      * @returns none
      */
     remove () {
-
+        this.ele.remove();
     }
 }
 
@@ -152,7 +170,7 @@ Overlay.alert = function (options) {
         onInit: function () {
             let self = this;
 
-            this.addEventHandler('#confirm', 'click', function () {
+            this.addEventHandler('[data-role=confirm]', 'click', function () {
                 self.close();
             
                 if (options.onConfirm && typeof options.onConfirm === 'function') {
@@ -186,20 +204,12 @@ Overlay.confirm = function (options) {
         onInit: function () {
             let self = this;
 
-            this.addEventHandler('#confirm', 'click', function () {
+            this.addEventHandler('[data-role=confirm]', 'click', function () {
                 self.close();
             
                 if (options.onConfirm && typeof options.onConfirm === 'function') {
                     options.onConfirm.apply(self);
                 }
-            });
-
-            this.addEventHandler('#cancel', 'click', function () {
-                self.close();
-
-                if (options.onCancel && typeof options.onCancel === 'function') {
-                    options.onCancel.apply(self);
-                }        
             });
 
             this.setContent('#message', options.message);

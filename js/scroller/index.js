@@ -16,7 +16,7 @@ import transit from '../common/transit';
         onScrollEnd {function} 滚动结束后的回调
    } 
  */
-export default class Carousel {
+export default class Scroller {
     /**
      * 构造函数
      * @constructor
@@ -24,9 +24,11 @@ export default class Carousel {
      */
     constructor (options) {
         this.container = options.container;
+
         this.snap = options.snap;
         this.wrapper = options.wrapper;
         this.onChange = options.onChange;
+        this.$snaps = null;
 
         this.currMove = 0;
 
@@ -38,13 +40,11 @@ export default class Carousel {
      * @returns none
      */
     init () {
-        this.$snaps = $(this.wrapper.children);
+        this.$snaps = this.getSnaps();
 
-        this.containerHeight = this.container.offsetHeight;
-        this.wrapperHeight = this.wrapper.offsetHeight;
-
-        this.snapHeight = this.wrapper.children[0].offsetHeight;
-        this.snapNumber = this.wrapper.children.length;
+        this.containerHeight = this.getContainerHeight();
+        this.snapHeight = this.getSnapHeight();
+        this.snapNumber = this.getSnapNumber();
 
         let self = this;
 
@@ -91,15 +91,9 @@ export default class Carousel {
             } else {
                 self.keepSnap();
 
-                if(self.onChange && typeof self.onChange === 'function') {
-                    var idx = (self.snapHeight - self.currMove) / self.snapHeight;
-                    var item
-                    var data = {
-
-                    };
-
-                    self.onChange();
-                }                  
+                if (self.onChange && typeof self.onChange === 'function') {
+                    self.onChange(self.getData());
+                }                
             }
 
             speed = 0;
@@ -125,14 +119,12 @@ export default class Carousel {
      */
     scroll (offset, transition, speed) {
         let currMove = this.currMove + offset;
-
-        let firstItemOffset = this.getFirstItemOffset();
         let destination = this.getSnapValue(currMove, false);
 
-        let min = this.snapHeight;
-        let max = - ( this.snapNumber - firstItemOffset ) * this.snapHeight;
+        let min = this.getMin();
+        let max = this.getMax();
 
-        let duration = Math.abs( destination * speed ) * this.snapNumber;
+        let duration = Math.abs(destination * speed) * this.snapNumber;
 
         if (this.transitObj && this.transitObj.transiting) {
             this.transitObj.stop();
@@ -160,11 +152,10 @@ export default class Carousel {
             duration: duration, 
             easing: 'easeOutQuad'
         }).then(function () {
-            if (self.onScrollEnd && typeof self.onScrollEnd === 'function') {
-                self.keepSnap();
-                
-                self.currSnapIdx = ( self.snapHeight - self.currMove ) / self.snapHeight;
-                self.onScrollEnd(self.currSnapIdx);
+            self.keepSnap();
+
+            if (self.onChange && typeof self.onChange === 'function') {
+                self.onChange(self.getData());
             }
         });
     }    
@@ -175,44 +166,34 @@ export default class Carousel {
      * @returns none
      */
     snapChange () {
-        let idx = this.calculateSnapIdx();
+        let currIdx = this.getActiveItemIdx();
+        let item = this.$snaps.get(currIdx);
 
-        if(idx !== false) {
-            var item = this.wrapper.children[idx];
-            this.$snaps.removeClass('ui-picker-selected');
-            $(item).addClass('ui-picker-selected');
-        }        
+        this.$snaps.removeClass('ui-picker-selected');
+        $(item).addClass('ui-picker-selected');
     }
 
     /**
      * 获取当前激活项下标
      * @returns {number} 当前栅格所在位置
      */
-    calculateSnapIdx () { 
+    getActiveItemIdx () { 
         let currIdx = parseInt((this.snapHeight - this.currMove) / this.snapHeight);
-        console.log(this.currMove)
-        let remainder = this.currMove % this.snapHeight;
-        let _remainder = Math.abs(remainder);
+        let remainder = (this.snapHeight - this.currMove) % this.snapHeight;
 
-        if(currIdx <= 0) {
+        if (currIdx < 0) {
             return 0;
         } else {
-            if (remainder > 0) {
-                if (remainder > 0.5) {
-                    currIdx ++;
-                }
-            } else if (remainder < 0){
-                if (remainder < 0.5) {
-                    currIdx ++;
-                }                
-            }
+            if (remainder > this.snapHeight / 2) {
+                currIdx ++;
+            }           
 
             return currIdx;
         }
     }
 
     /**
-     * 捕捉栅格
+     * 框定栅格
      * @returns none
      */
     keepSnap () {
@@ -227,8 +208,8 @@ export default class Carousel {
             snapOffset = - snapOffset;
         }
 
-        let min = this.snapHeight;
-        let max = (this.snapHeight - (this.snapNumber - 1) * this.snapHeight);
+        let min = this.getMin();
+        let max = this.getMax();
 
         if(snapOffset > min) {
             snapOffset = min;
@@ -239,6 +220,54 @@ export default class Carousel {
         let offset = snapOffset - this.currMove;
 
         this.move(offset, false);        
+    }
+
+    /**
+     * 获取子项数量
+     * @returns {number} 子项数量
+     */
+    getSnapNumber () {
+        return this.wrapper.children.length;
+    }
+
+    /**
+     * 获取容器高度
+     * @returns {number} 容器高度
+     */
+    getContainerHeight() {
+        return this.container.offsetHeight;
+    }
+
+    /**
+     * 获取项高度
+     * @returns {number} 子项高度
+     */
+    getSnapHeight () {
+        return this.wrapper.children[0].offsetHeight;
+    }
+
+    /**
+     * 获取子项
+     * @returns {jquery} 子项的jquery对象
+     */
+    getSnaps () {
+        return $(this.wrapper.children);
+    }
+
+    /**
+     * 获取下边界
+     * @returns {number} 上边界
+     */
+    getMax () {
+        return (this.snapHeight - (this.snapNumber - 1) * this.snapHeight);
+    }
+
+    /**
+     * 获取上边界
+     * @returns {number} 下边界
+     */
+    getMin () {
+        return this.getSnapHeight();
     }
 
     /**
@@ -254,35 +283,48 @@ export default class Carousel {
     }
 
     /**
-     * 获取第一个节点的偏移量
-     * @returns {number} 第一个节点的偏移量
-     */
-    getFirstItemOffset () {
-        return this.snapNumber % 2 ? parseInt(this.snapNumber / 2) : parseInt(this.snapNumber / 2) - 1;
-    }
-
-    /**
-     * 获取最后一个节点的偏移量
-     * @returns {number} 最后一个节点的偏移量
-     */    
-    getLastItemOffset () {
-        return parseInt(this.snapNumber / 2);        
-    }
-
-    /**
-     * 获取中间一个节点的偏移量
-     * @returns {number} 最后一个节点的偏移量
-     */
-    getMiddleIndex () {
-        return Math.ceil(this.snapNumber / 2) - 1;
-    }
-
-    /**
      * 滚动至一个节点(snap)
      * @param {number} 节点下标
      * @returns none
      */
     scrollTo (idx) {
         this.move(( idx - 1 ) * -50, false);
+    }
+
+    /**
+     * 获取当前选中值
+     * @returns none
+     */
+    getValue () {
+        return this.getData().value;
+    }
+
+    /**
+     * 获取当前选中对象
+     * @returns {object} 当前选中对象
+     */
+    getData () {
+        let currIdx = this.getActiveItemIdx();
+        let activeItem = $(this.$snaps.get(currIdx));
+
+        return {
+            text: activeItem.html(),
+            value: activeItem.data('picker-value')
+        };        
+    }
+
+    /**
+     * html 产生变化
+     * @returns {object} 当前选中对象
+     */
+    htmlChange (wrapper) {
+        if (wrapper) {
+            this.wrapper = wrapper;
+        }
+
+        this.$snaps = this.getSnaps();    
+        this.containerHeight = this.getContainerHeight();
+        this.snapHeight = this.getSnapHeight();
+        this.snapNumber = this.getSnapNumber();
     }
 };

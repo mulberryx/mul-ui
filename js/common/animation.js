@@ -52,13 +52,13 @@ class AnimationFrame {
     /**
      * 执行动画
      * @param { function } 动画行为
-     * @return none
+     * @returns none
      */  
     request (action) {}
 
     /**
      * 取消
-     * @return none
+     * @returns none
      */  
     cancel () {}
 }
