@@ -11,8 +11,9 @@ let pickerRender = tools.tmpl(pickerTemplate);
  * @options: {
         id: {string} 容器id
         cols: {array} 选择数组
-        defaultvalue: {array} 默认值
+        enable: {boolean} 是否可用
         onChange：{function} 关闭窗口回调
+        defaultvalue: {array} 默认值
    }
  */
 class Picker {
@@ -30,7 +31,7 @@ class Picker {
         this.onChange = options.onChange;
         this.cols = options.cols;
 
-        this.value = options.defaultvalue;
+        this.value = options.defaultvalue || [];
         this.scrollers = [];
 
         this.init();
@@ -46,6 +47,7 @@ class Picker {
         }));
 
         this.initScroller();
+        this.setValue();
     }
 
     /**
@@ -73,9 +75,7 @@ class Picker {
             };
 
             self.scrollers.push(new Scroller(options));       
-        });
-
-        this.setValue();        
+        });       
     }
 
     /**
@@ -86,30 +86,41 @@ class Picker {
     setValue (valArr) {
         this.value = valArr || this.value;
 
-        for (let i = this.value.length - 1; i >= 0; i --) {
-            let val = this.value[i];
-            let rows = this.cols[i].rows;
+        if (this.value.length) {
+            for (let i = this.value.length - 1; i >= 0; i --) {
+                let val = this.value[i];
+                let rows = this.cols[i].rows;
 
-            let _i = false;
+                let _i = false;
 
-            for (let j = rows.length - 1; j >= 0; j --) {
-                let row = rows[j];
+                for (let j = rows.length - 1; j >= 0; j --) {
+                    let row = rows[j];
 
-                if (row.value == val) {
-                    _i = j;
-                    break;
+                    if (row.value == val) {
+                        _i = j;
+                        break;
+                    }
+                }
+
+                if (_i !== false) {
+                    this.scrollers[i].scrollTo(_i);
                 }
             }
+        } else {
+            for (var i = this.cols.length - 1; i >= 0; i--) {
+                let col = this.cols[i];
+                let rows = col.rows;
 
-            if (_i !== false) {
-                this.scrollers[i].scrollTo(_i);
+                this.value[i] = rows[0].value;
+                this.scrollers[i].scrollTo(0);
             }
         }
     }
 
     /**
      * 根据新的列数据模型重绘
-     * @returns {array} 值数组，次序对应cols
+     * @param {array} 列
+     * @returns none
      */
     setCols (cols) {
         this.cols = cols;
@@ -118,22 +129,12 @@ class Picker {
             cols: this.cols
         }));
 
-        let scrollers = this.scrollers;
-        let colItems = this.container.find('.ui-picker-items-col');
-
-        for (let i = scrollers.length - 1; i >= 0; i --) {
-            let scroller = scrollers[i];
-
-            let container = $(colItems[i]);
-            let wrapper = container.find('.ui-picker-items-col-wrapper');
-
-            scroller.htmlChange(wrapper[0]);         
-        }        
+        this.initScroller();    
     }
 
     /**
      * 获取值
-     * @returns {array} 值数组，次序对应cols
+     * @returns {array} 值数组，次序对应列
      */
     getValue () {
         return this.value;

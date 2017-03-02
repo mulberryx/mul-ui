@@ -37,7 +37,7 @@ module.exports = {
         path: ASSET_PATH,
         filename: devServer ? 'js/[name].js' : 'js/[name].min.js',
         chunkFilename: devServer ? 'js/[name].js' : 'js/[name].min.js',
-        publicPath: 'http://localhost:3030/',
+        publicPath: '/',
         libraryTarget: 'umd'
     },
     module: {

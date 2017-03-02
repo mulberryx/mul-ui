@@ -24,6 +24,7 @@ export default class Scroller {
      */
     constructor (options) {
         this.container = options.container;
+        this.disabled = this.container.getAttribute('data-disabled');
 
         this.snap = options.snap;
         this.wrapper = options.wrapper;
@@ -46,11 +47,17 @@ export default class Scroller {
         this.snapHeight = this.getSnapHeight();
         this.snapNumber = this.getSnapNumber();
 
+        if (this.disabled === 'disabled') {
+            return false;
+        }
+
+        this.touchstartmove = false;
+
         let self = this;
 
         let lastY = null;
-        let distanceY = null;
-
+        let startY = null;
+        let offsetY = null;
         let speed = null;
 
         /**
@@ -63,13 +70,15 @@ export default class Scroller {
             let clientY = touch.clientY;
 
             if(lastY !== null) {
-                distanceY = clientY - lastY;
-                speed = distanceY / this.containerHeight;
+                offsetY = clientY - lastY;
+                speed = offsetY / self.containerHeight;
 
-                self.move(distanceY, true);
+                self.move(offsetY, true);
             }
 
             lastY = clientY;
+
+            self.touchstartmove = true;
         };
 
         /**
@@ -83,48 +92,53 @@ export default class Scroller {
 
             lastY = null;
 
-            if(speed && Math.abs(speed) > 0.1) {
-                let snapHeight = 50;
-                let distance = speed * snapHeight * self.snapNumber;
+            if (self.touchstartmove === true) { 
+                if(speed && Math.abs(speed) > 0.1) {
+                    self.scroll(speed);
+                } else {
+                    self.keepSnap();
 
-                self.scroll(distance, true, speed);
-            } else {
-                self.keepSnap();
-
-                if (self.onChange && typeof self.onChange === 'function') {
-                    self.onChange(self.getData());
-                }                
+                    if (self.onChange && typeof self.onChange === 'function') {
+                        self.onChange(self.getData());
+                    }                
+                }
             }
 
             speed = 0;
         };
 
+        
         this.container.addEventListener('touchstart', function (e) {
             e.preventDefault();
 
             let touch = e.touches[0];
 
-            lastY = touch.clientY;
+            lastY = startY = touch.clientY;
 
             self.container.addEventListener('touchmove', touchmove);
             self.container.addEventListener('touchend', touchend);  
+
+            if (self.transitObj) {
+                self.transitObj.stop();
+            }
+
+            self.touchstartmove = false;
         });
     }    
 
     /**
      * 滚动位移
-     * @param {number} 位移
      * @param {number} 速度        
      * @returns none
      */
-    scroll (offset, transition, speed) {
-        let currMove = this.currMove + offset;
-        let destination = this.getSnapValue(currMove, false);
+    scroll (speed) {
+        let offset = speed * this.snapHeight * this.snapNumber;
+        let destination = this.currMove + offset;
 
         let min = this.getMin();
         let max = this.getMax();
 
-        let duration = Math.abs(destination * speed) * this.snapNumber;
+        let duration = Math.abs(speed * this.snapNumber * this.snapHeight);
 
         if (this.transitObj && this.transitObj.transiting) {
             this.transitObj.stop();
@@ -137,12 +151,13 @@ export default class Scroller {
 
         this.transitObj = transit({
             step: function (coe, per) {
-                let offset = self.currMove + destination * coe;
+                let _offset = offset * coe;
+                let _destination = self.currMove + offset;
 
-                if((offset > min || offset < max) && self.transitObj) {
+                if((_destination > min || _destination < max) && self.transitObj) {
                     self.transitObj.stop();
                 } else {
-                    self.move(offset, true);
+                    self.move(_offset, true);
 
                     if (per >= 1 || coe < 0.0001) {
                         self.transitObj.stop();
@@ -186,7 +201,11 @@ export default class Scroller {
         } else {
             if (remainder > this.snapHeight / 2) {
                 currIdx ++;
-            }           
+            }          
+
+            if ((currIdx + 1) > this.snapNumber) {
+                currIdx = this.snapNumber - 1;
+            } 
 
             return currIdx;
         }

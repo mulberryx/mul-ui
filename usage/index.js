@@ -7,6 +7,13 @@ import Overlay from '../js/overlay';
 import Picker from '../js/picker';
 import Datepicker from '../js/datepicker';
 
+var timer = function (func) {
+    var start = new Date();
+    func();
+    var end = new Date();
+    alert(end.getTime() - start.getTime());
+};
+
 /**
  * 半浮层
  */
@@ -130,13 +137,17 @@ let picker = new Picker({
  * picker 浮层
  */
 
-let datepicker = new Datepicker({
-    id: 'datepicker',
-    defaultvalue: '2014/06/07 00:00:00',
-    beginDate: '2014/03/07 00:00:00',
-    endDate: '2019/12/07 00:00:00',
-    format: 'yyyy/MM/dd HH:mm:dd',
-    onChange: function (val) {
-        console.log(val);
-    }
+timer (function () {
+    let datepicker = new Datepicker({
+        id: 'datepicker',
+        defaultvalue: '2015/06/07 00:00',
+        beginDate: '1990/01/12 12:12',
+        endDate: '2100/11/16 12:33',
+        format: 'yyyy/MM/dd HH:mm',
+        onChange: function (val) {
+            console.log(val);
+        }
+    });    
 });
+
+

@@ -1,5 +1,5 @@
 .ui-bar {
-    position: absolute;
+    position: relative;
     right: 0;
     left: 0;
     z-index: 10;
@@ -25,13 +25,16 @@
     }
 
     .link {
-        position: relative;
-        font-weight: 400;
+        position: absolute;
+        right: 0;
         top: 0;
+        min-width: 40px;
         padding: 0;
+        height: 2.2rem;
         font-size: 0.8rem;
         line-height: 2.2rem;
-        height: 2.2rem;
+        text-align: center;        
+        font-weight: 400;        
         color: #0894ec;
         border: 0;   
         z-index: 20;     

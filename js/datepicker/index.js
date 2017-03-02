@@ -1,7 +1,7 @@
 "use strict";
 
 import tools from '../common/tools';
-import { WEEK_CN, NUMBER_CN, LEEP_MONTH, NATURE_LIMITS, DATE_UNITS } from '../common/const';
+import { WEEK_CN, NUMBER_CN, LEEP_MONTH, NATURE_LIMITS, DATE_UNITS } from './const';
 import Overlay from '../overlay';
 import Picker from '../picker';
 
@@ -15,7 +15,7 @@ let defaultConfig = {
     defaultvalue: '',                     // 默认日期(时间戳，字符串，Date对象)
     beginDate: '1970/01/01 00:00',        // 开始日期
     endDate: '2100/01/01 00:00',          // 结束日期
-    format: 'yyyy/MM/dd HH:mm:ss',        // 日期格式
+    format: 'yyyy/MM/dd HH:mm',        // 日期格式
     onChange: function (val) {
         console.log(val);
     }
@@ -50,6 +50,9 @@ class Datepicker {
         this.format = _options.format;
         this.onChange = _options.onChange;
 
+        this.overlay = null;
+        this.picker = null;
+
         this.init();
     }
 
@@ -58,24 +61,21 @@ class Datepicker {
      * @returns none
      */
     init () {
-        this.initData();
-        this.initOverlay();
-        // this.initPicker();
-
-        this.initInput();
-    }
-
-    /**
-     * 初始化常用的数据
-     * @returns none
-     */
-    initData () {
         if(!this.value) {
             this.currentDate = new Date();
         } else {
             this.currentDate = new Date(this.value);
         }
 
+        this.syncData();
+        this.initInput();
+    }
+
+    /**
+     * 同步数据
+     * @returns none
+     */
+    syncData () {
         this._beginDate = new Date(this.beginDate);
         this._endDate = new Date(this.endDate);
 
@@ -88,6 +88,7 @@ class Datepicker {
         }
 
         this.value = this.getFormatValue();
+        this.input.val(this.value);
     }
 
     /**
@@ -98,7 +99,13 @@ class Datepicker {
         let self = this;
 
         this.input.click(function () {
+            if (!self.overlay) {
+                self.initOverlay();
+                self.initPicker();
+            }
+
             self.overlay.open();
+            self.input.blur();
         });  
 
         this.input.attr('readonly', 'readonly');
@@ -127,12 +134,19 @@ class Datepicker {
         let pickerContainer = this.overlay.findElement('[data-role=picker]');
         let pickerCols = this.getPickerCols();
 
+        let year = this.currentDate.getFullYear(),
+            month = this.currentDate.getMonth() + 1,
+            date = this.currentDate.getDate(),
+            day = this.currentDate.getDay(),
+            hour = this.currentDate.getHours(),
+            minute = this.currentDate.getMinutes();
+
         this.picker = new Picker({
             container: pickerContainer,
             cols: pickerCols,
-            defaultvalue: [],
-            onChange: function () {
-
+            defaultvalue: [year, month, date, day, hour, minute],
+            onChange: function (val) {
+                self.valueChange(val);
             }
         });
     }
@@ -169,8 +183,10 @@ class Datepicker {
             let years = [];
 
             for (var i = beginYear; i <= endYear; i ++) {
+                let text = i < 10 ? '0' + i : i;
+
                 years.push({
-                    text: i,
+                    text: text,
                     value: i
                 });
             } 
@@ -185,18 +201,20 @@ class Datepicker {
             endMonth = 12;
 
             if (year === beginYear) {
-                beginMonth = this.getDate('month', this._beginDate);
+                beginMonth = this.getDate('MM', this._beginDate);
             }   
 
             if (year === endYear) {
-                endMonth = this.getDate('month', this._endDate);
+                endMonth = this.getDate('MM', this._endDate);
             }
 
             let months = [];
 
             for (var i = beginMonth; i <= endMonth; i ++) {
+                let text = i < 10 ? '0' + i : i;
+
                 months.push({
-                    text: i,
+                    text: text,
                     value: i
                 });
             }
@@ -210,19 +228,29 @@ class Datepicker {
             beginDate = 1;
             endDate = 31;
 
-            if (beginYear === year && beginMonth === month) {
+            if(month === 2) {
+                endDate = (year % 4) ? 28 : 29;
+            } else {
+                endDate = LEEP_MONTH[month] ? 31 : 30;
+            }
+
+            if (beginYear === year && 
+                beginMonth === month) {
                 beginDate = this.getDate('dd', this._beginDate);
             }   
 
-            if (endYear === year && endMonth === month) {
+            if (endYear === year && 
+                endMonth === month) {
                 endDate = this.getDate('dd', this._endDate);
             }
 
             let dates = [];
 
             for (var i = beginDate; i <= endDate; i ++) {
+                let text = i < 10 ? '0' + i : i;
+
                 dates.push({
-                    text: i,
+                    text: text,
                     value: i
                 });
             }    
@@ -232,36 +260,45 @@ class Datepicker {
             });        
         }
 
-        if(this.format.indexOf('yyyy') && this.format.indexOf('MM') && this.format.indexOf('dd')) { 
+        if(this.format.indexOf('yyyy') !== -1 && 
+           this.format.indexOf('MM') !== -1 && 
+           this.format.indexOf('dd') !== -1) { 
             let days = [];
 
             days.push({
-                text: day,
+                text:'星期' + WEEK_CN[day],
                 value: day
             });
 
             cols.push({
-                rows: days
+                rows: days,
+                disabled: true
             });
         }
 
         if(this.format.indexOf('HH') !== -1) { 
-            let beginHour = 0;
-            let endHour = 23;
+            beginHour = 0;
+            endHour = 23;
 
-            if (beginYear === year && beginMonth === month && beginDate === date) {
+            if (beginYear === year && 
+                beginMonth === month && 
+                beginDate === date) {
                 beginHour = this.getDate('HH', this._beginDate);
             }   
 
-            if (endYear === year && endMonth === month && endDate === date) {
+            if (endYear === year && 
+                endMonth === month && 
+                endDate === date) {
                 endHour = this.getDate('HH', this._endDate);
             }
 
             let hours = [];
 
             for (var i = beginHour; i <= endHour; i ++) {
+                let text = i < 10 ? '0' + i : i;
+
                 hours.push({
-                    text: i,
+                    text: text,
                     value: i
                 });
             }
@@ -275,19 +312,27 @@ class Datepicker {
             let beginMinutes = 0;
             let endMinutes = 59;
 
-            if (beginYear === year && beginMonth === month && beginDate === date && beginHour === hour) {
+            if (beginYear === year && 
+                beginMonth === month && 
+                beginDate === date && 
+                beginHour === hour) {
                 beginMinutes = this.getDate('mm', this._beginDate);
             }   
 
-            if (endYear === year && endMonth === month && endDate === date && endHour === hour) {
+            if (endYear === year && 
+                endMonth === month && 
+                endDate === date && 
+                endHour === hour) {
                 endMinutes = this.getDate('mm', this._endDate);
             }
 
             let minutes = [];
 
-            for (var i = beginDate; i <= endDate; i ++) {
+            for (var i = beginMinutes; i <= endMinutes; i ++) {
+                let text = i < 10 ? '0' + i : i;
+
                 minutes.push({
-                    text: i,
+                    text: text,
                     value: i
                 });
             }
@@ -296,50 +341,40 @@ class Datepicker {
                 rows: minutes
             });            
         }
+
+        return cols;
     }
 
     /**
-     * 让所有数据同步
-     * @param { boolean } 是否需要同步数据 
+     * 值变化
+     * @param 新的值
      * @returns none
      */
-    apply (syn) {
-        
-    }
-
-    /*
-     * 激活的节点脏检查
-     * @param {string} {yyyy || MM ..}
-     * @param {string || Number} 当前值
-     * @returns none
-     */
-    dirty () { 
-        
+    valueChange (nv) {
+        this.currentDate = new Date(nv[0], ( nv[1] - 1 ), nv[2], nv[4], nv[5]);
+        this.apply();
     }
 
     /**
-     * 时间变化，其余系统变化
+     * 数据变化，触发同步
      * @returns none
      */
-    synData () {
+    apply () {
+        this.syncData();
+        this.picker.setCols(this.getPickerCols());
 
-    }
+        let year = this.currentDate.getFullYear(),
+            month = this.currentDate.getMonth() + 1,
+            date = this.currentDate.getDate(),
+            day = this.currentDate.getDay(),
+            hour = this.currentDate.getHours(),
+            minute = this.currentDate.getMinutes();        
 
-    /**
-     * 时间值区间变化
-     * @returns none
-     */
-    synLimits () { 
-        
-    }
+        this.picker.setValue([year, month, date, day, hour, minute]);        
 
-    /**
-     * 值反馈至view
-     * @param { number(7)} 年，月，日，星期几，时，分，秒 
-     * @returns none
-     */
-    synView () {
-    
+        if (this.onChange && typeof this.onChange) {
+            this.onChange(this.value);
+        }        
     }
 
     /**
@@ -348,7 +383,10 @@ class Datepicker {
      * @returns none
      */
     setBeginDate (beginDate) {
+        this.beginDate = beginDate;
+        this._beginDate = new Date(this.beginDate);
 
+        this.apply();
     }
 
     /**
@@ -357,17 +395,21 @@ class Datepicker {
      * @returns none
      */
     setEndDate (endDate) {
+        this.endDate = endDate;
+        this._endDate = new Date(this.endDate);
 
+        this.apply();
     }
 
     /**
      * 设置当前选择下标
-     * @param {string} {yyyy || MM ..}
-     * @param {number|string} 当前值
+     * @param {string} 当前值
      * @returns none
      */
-    setValue (type, val) {
-
+    setValue (val) {
+        this.value = val;
+        this.currentDate = new Date(val);
+        this.input.val(this.val);
     }
 
     /**
@@ -375,11 +417,13 @@ class Datepicker {
      * @returns none
      */
     getValue () {
-
+        return this.value;
     }    
 
     /**
      * 获取日期（年|月 ..）的值
+     * @param {string} 年月日的正则
+     * @param {date} 日期
      * @returns none
      */
     getDate (name, date) {
@@ -391,26 +435,26 @@ class Datepicker {
 
         switch (name) {
             case 'yyyy':
-                val = this.currDate.getFullYear();
+                val = date.getFullYear();
                 break;
             case 'MM':
-                val = this.currDate.getMonth() + 1;
+                val = date.getMonth() + 1;
                 break;
             case 'dd':
-                val = this.currDate.getDate();
+                val = date.getDate();
                 break;
             case 'day':
-                val = this.currDate.getDay();
+                val = date.getDay();
                 break;
             case 'HH':
-                val = this.currDate.getHours();
+                val = date.getHours();
                 break;
             case 'mm':
-                val = this.currDate.getMinutes(); 
+                val = date.getMinutes(); 
                 break;
         }
 
-        return val; 
+        return val;
     } 
 
     /**
@@ -418,31 +462,29 @@ class Datepicker {
      * @returns {string} 格式化后的日期
      */
     getFormatValue () {
-        var format = this.format;
-        var date = this.currentDate;
+        let formatValue = this.format;
+        let date = this.currentDate;
 
-        var o = {
+        let o = {
             "M+": date.getMonth() + 1,
             "d+": date.getDate(),
             "H+": date.getHours(),
             "h+": date.getHours(),
-            "m+": date.getMinutes(),
-            "s+": date.getSeconds(),
-            "q+": Math.floor((date.getMonth() + 3) / 3),
-            "S": date.getMilliseconds()
+            "m+": date.getMinutes()
         };
 
-        if (/(y+)/.test(format)) {
-            format = format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        if (/(y+)/.test(formatValue)) {
+            formatValue = formatValue.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
         
-        for (var k in o) {
-            if (new RegExp("(" + k + ")").test(format)) {
-                format = format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        for (let k in o) {
+            if (new RegExp("(" + k + ")").test(formatValue)) {
+                let val = o[k];
+                formatValue = formatValue.replace(RegExp.$1, (RegExp.$1.length == 1) ? (val) : (("00" + val).substr(("" + val).length)));
             }
         }
 
-        return format;        
+        return formatValue;        
     }   
 }
 
