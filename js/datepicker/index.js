@@ -11,11 +11,12 @@ import datepickerTemplate from 'html-loader!./datepicker.html';
  * 默认配置
  */
 let defaultConfig = {
-    id: '',                               // 初始化容器
-    defaultvalue: '',                     // 默认日期(时间戳，字符串，Date对象)
-    beginDate: '1970/01/01 00:00',        // 开始日期
-    endDate: '2100/01/01 00:00',          // 结束日期
-    format: 'yyyy/MM/dd HH:mm',        // 日期格式
+    id: '',                             // 初始化容器
+    defaultvalue: '',                   // 默认日期(时间戳，字符串，Date对象)
+    min: '1970/01/01 00:00',            // 最小值
+    max: '2100/01/01 00:00',            // 最大值
+    displayformat: 'yyyy/MM/dd HH:mm',     // 日期显示格式
+    valueformat: 'yyyy/MM/dd HH:mm',       // 日期值格式
     onChange: function (val) {
         console.log(val);
     }
@@ -27,9 +28,10 @@ let defaultConfig = {
  * @options: {
         id: {string} 容器id
         defaultvalue: {string} 默认值
-        beginDate: {string} 开始时间
-        endDate: {string} 结束时间
-        format: {string} 时间格式
+        min: {string} 开始时间
+        max: {string} 结束时间
+        displayformat: {string} 日期显示格式
+        valueformat: {string} 日期值格式
         onChange: {function} 值改变回调
    } 
  */
@@ -45,9 +47,12 @@ class Datepicker {
 
         this.input = $('#' + _options.id);
         this.value = _options.defaultvalue;
-        this.beginDate = _options.beginDate;
-        this.endDate = _options.endDate;
-        this.format = _options.format;
+        this.min = _options.min;
+        this.max = _options.max;
+
+        this.displayformat = _options.displayformat;
+        this.valueformat = _options.valueformat;
+
         this.onChange = _options.onChange;
 
         this.overlay = null;
@@ -76,19 +81,19 @@ class Datepicker {
      * @returns none
      */
     syncData () {
-        this._beginDate = new Date(this.beginDate);
-        this._endDate = new Date(this.endDate);
+        this._min = new Date(this.min);
+        this._max = new Date(this.max);
 
-        if (this.currentDate < this._beginDate) {
-            this.currentDate = this._beginDate;
+        if (this.currentDate < this._min) {
+            this.currentDate = this._min;
         }
 
-        if (this.currentDate > this._endDate) {
-            this.currentDate = this._endDate;
+        if (this.currentDate > this._max) {
+            this.currentDate = this._max;
         }
 
         this.value = this.getFormatValue();
-        this.input.val(this.value);
+        this.input.val(this.getFormatValue(this.displayformat));
     }
 
     /**
@@ -176,9 +181,9 @@ class Datepicker {
             beiginMinute,
             endMinute;
 
-        if(this.format.indexOf('yyyy') !== -1) {
-            beginYear = this.getDate('yyyy', this._beginDate);
-            endYear = this.getDate('yyyy', this._endDate);
+        if(this.valueformat.indexOf('yyyy') !== -1) {
+            beginYear = this.getDate('yyyy', this._min);
+            endYear = this.getDate('yyyy', this._max);
 
             let years = [];
 
@@ -196,16 +201,16 @@ class Datepicker {
             });
         }
 
-        if(this.format.indexOf('MM') !== -1) { 
+        if(this.valueformat.indexOf('MM') !== -1) { 
             beginMonth = 1;
             endMonth = 12;
 
             if (year === beginYear) {
-                beginMonth = this.getDate('MM', this._beginDate);
+                beginMonth = this.getDate('MM', this._min);
             }   
 
             if (year === endYear) {
-                endMonth = this.getDate('MM', this._endDate);
+                endMonth = this.getDate('MM', this._max);
             }
 
             let months = [];
@@ -224,7 +229,7 @@ class Datepicker {
             });
         }
 
-        if(this.format.indexOf('dd') !== -1) { 
+        if(this.valueformat.indexOf('dd') !== -1) { 
             beginDate = 1;
             endDate = 31;
 
@@ -236,12 +241,12 @@ class Datepicker {
 
             if (beginYear === year && 
                 beginMonth === month) {
-                beginDate = this.getDate('dd', this._beginDate);
+                beginDate = this.getDate('dd', this._min);
             }   
 
             if (endYear === year && 
                 endMonth === month) {
-                endDate = this.getDate('dd', this._endDate);
+                endDate = this.getDate('dd', this._max);
             }
 
             let dates = [];
@@ -260,9 +265,9 @@ class Datepicker {
             });        
         }
 
-        if(this.format.indexOf('yyyy') !== -1 && 
-           this.format.indexOf('MM') !== -1 && 
-           this.format.indexOf('dd') !== -1) { 
+        if(this.valueformat.indexOf('yyyy') !== -1 && 
+           this.valueformat.indexOf('MM') !== -1 && 
+           this.valueformat.indexOf('dd') !== -1) { 
             let days = [];
 
             days.push({
@@ -276,20 +281,20 @@ class Datepicker {
             });
         }
 
-        if(this.format.indexOf('HH') !== -1) { 
+        if(this.valueformat.indexOf('HH') !== -1) { 
             beginHour = 0;
             endHour = 23;
 
             if (beginYear === year && 
                 beginMonth === month && 
                 beginDate === date) {
-                beginHour = this.getDate('HH', this._beginDate);
+                beginHour = this.getDate('HH', this._min);
             }   
 
             if (endYear === year && 
                 endMonth === month && 
                 endDate === date) {
-                endHour = this.getDate('HH', this._endDate);
+                endHour = this.getDate('HH', this._max);
             }
 
             let hours = [];
@@ -308,7 +313,7 @@ class Datepicker {
             });
         }
 
-        if(this.format.indexOf('mm') !== -1) { 
+        if(this.valueformat.indexOf('mm') !== -1) { 
             let beginMinutes = 0;
             let endMinutes = 59;
 
@@ -316,14 +321,14 @@ class Datepicker {
                 beginMonth === month && 
                 beginDate === date && 
                 beginHour === hour) {
-                beginMinutes = this.getDate('mm', this._beginDate);
+                beginMinutes = this.getDate('mm', this._min);
             }   
 
             if (endYear === year && 
                 endMonth === month && 
                 endDate === date && 
                 endHour === hour) {
-                endMinutes = this.getDate('mm', this._endDate);
+                endMinutes = this.getDate('mm', this._max);
             }
 
             let minutes = [];
@@ -382,9 +387,9 @@ class Datepicker {
      * @param { number | string } 时间戳 | 符合格式的字符串
      * @returns none
      */
-    setBeginDate (beginDate) {
-        this.beginDate = beginDate;
-        this._beginDate = new Date(this.beginDate);
+    setMin (min) {
+        this.min = min;
+        this._min = new Date(this.min);
 
         this.apply();
     }
@@ -394,9 +399,9 @@ class Datepicker {
      * @param { number | string } 时间戳 | 符合格式的字符串
      * @returns none
      */
-    setEndDate (endDate) {
-        this.endDate = endDate;
-        this._endDate = new Date(this.endDate);
+    setMax (max) {
+        this.max = max;
+        this._max = new Date(this.max);
 
         this.apply();
     }
@@ -455,14 +460,15 @@ class Datepicker {
         }
 
         return val;
-    } 
+    }
 
     /**
      * 格式化当前日期
+     * @param {string} 日期格式
      * @returns {string} 格式化后的日期
      */
-    getFormatValue () {
-        let formatValue = this.format;
+    getFormatValue (format) {
+        let _format = format || this.valueformat;
         let date = this.currentDate;
 
         let o = {
@@ -473,18 +479,18 @@ class Datepicker {
             "m+": date.getMinutes()
         };
 
-        if (/(y+)/.test(formatValue)) {
-            formatValue = formatValue.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        if (/(y+)/.test(_format)) {
+            _format = _format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
         }
         
         for (let k in o) {
-            if (new RegExp("(" + k + ")").test(formatValue)) {
+            if (new RegExp("(" + k + ")").test(_format)) {
                 let val = o[k];
-                formatValue = formatValue.replace(RegExp.$1, (RegExp.$1.length == 1) ? (val) : (("00" + val).substr(("" + val).length)));
+                _format = _format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (val) : (("00" + val).substr(("" + val).length)));
             }
         }
 
-        return formatValue;        
+        return _format;        
     }   
 }
 

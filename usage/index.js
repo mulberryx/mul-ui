@@ -141,9 +141,10 @@ timer (function () {
     let datepicker = new Datepicker({
         id: 'datepicker',
         defaultvalue: '2015/06/07 00:00',
-        beginDate: '1990/01/12 12:12',
-        endDate: '2100/11/16 12:33',
-        format: 'yyyy/MM/dd HH:mm',
+        min: '2000/01/12 12:12',
+        max: '2100/11/16 12:33',
+        displayformat: 'yyyy/MM/dd HH:mm',
+        valueformat: 'yyyy/MM/dd HH:mm',
         onChange: function (val) {
             console.log(val);
         }

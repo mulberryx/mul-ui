@@ -16,7 +16,7 @@ class Mask {
             Tools.triggerEvent(EVENTS['ACTION:MASK:CLICK']);
         });
 
-        document.body.append(this.ele[0]);
+        document.body.appendChild(this.ele[0]);
     }
 
     /**

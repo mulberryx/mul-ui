@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/mulberryx/mul-ui#readme",
   "dependencies": {
-    "jquery": "latest",
+    "jquery": "^1.12.4",
     "less": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest",

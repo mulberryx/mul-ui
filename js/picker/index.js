@@ -4,7 +4,7 @@ import Scroller from '../scroller';
 import pickerTemplate from 'html-loader!./picker.html';
 
 let pickerRender = tools.tmpl(pickerTemplate);
-
+console.log(pickerRender.toString());
 /**
  * Picker 选择组件
  * @class
