@@ -17,6 +17,7 @@ let defaultConfig = {
     max: '2100/01/01 00:00',            // 最大值
     displayformat: 'yyyy/MM/dd HH:mm',     // 日期显示格式
     valueformat: 'yyyy/MM/dd HH:mm',       // 日期值格式
+    showtime: true,                        // 是否显示时分的选择
     onChange: function (val) {
         console.log(val);
     }
@@ -49,9 +50,10 @@ class Datepicker {
         this.value = _options.defaultvalue;
         this.min = _options.min;
         this.max = _options.max;
+        this.showtime = options.showtime;
 
-        this.displayformat = _options.displayformat;
-        this.valueformat = _options.valueformat;
+        this.displayformat = _options.displayformat.replace('hh', 'HH');
+        this.valueformat = _options.valueformat.replace('hh', 'HH');
 
         this.onChange = _options.onChange;
 
@@ -72,15 +74,15 @@ class Datepicker {
             this.currentDate = new Date(this.value);
         }
 
-        this.syncData();
+        this.initData();
         this.initInput();
     }
 
     /**
-     * 同步数据
+     * 初始化数据
      * @returns none
      */
-    syncData () {
+    initData () {
         this._min = new Date(this.min);
         this._max = new Date(this.max);
 
@@ -139,21 +141,35 @@ class Datepicker {
         let pickerContainer = this.overlay.findElement('[data-role=picker]');
         let pickerCols = this.getPickerCols();
 
-        let year = this.currentDate.getFullYear(),
-            month = this.currentDate.getMonth() + 1,
-            date = this.currentDate.getDate(),
-            day = this.currentDate.getDay(),
-            hour = this.currentDate.getHours(),
-            minute = this.currentDate.getMinutes();
+        let _format = this.valueformat;
+        let date = this.currentDate;
+        var pickerVals = [];
+
+        let o = {
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
+        };
+        
+        for (let k in o) {
+            if (new RegExp("(" + k + ")").test(_format)) {
+                pickerVals.push(o[k]);
+            }
+        }
 
         this.picker = new Picker({
             container: pickerContainer,
             cols: pickerCols,
-            defaultvalue: [year, month, date, day, hour, minute],
             onChange: function (val) {
                 self.valueChange(val);
             }
         });
+
+        this.syncPickerValue();
     }
 
     /**
@@ -281,7 +297,7 @@ class Datepicker {
             });
         }
 
-        if(this.valueformat.indexOf('HH') !== -1) { 
+        if(this.valueformat.indexOf('HH') !== -1 && this.showtime) { 
             beginHour = 0;
             endHour = 23;
 
@@ -313,7 +329,7 @@ class Datepicker {
             });
         }
 
-        if(this.valueformat.indexOf('mm') !== -1) { 
+        if(this.valueformat.indexOf('mm') !== -1 && this.showtime) { 
             let beginMinutes = 0;
             let endMinutes = 59;
 
@@ -356,7 +372,33 @@ class Datepicker {
      * @returns none
      */
     valueChange (nv) {
-        this.currentDate = new Date(nv[0], ( nv[1] - 1 ), nv[2], nv[4], nv[5]);
+        let _format = this.valueformat;
+        let date = this.currentDate;
+        var pickerVals = [];
+
+        let o = {
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
+        };
+
+        let i = 0;
+
+        for (let k in o) {
+            if (new RegExp("(" + k + ")").test(_format)) {
+                o[k] = nv[i];
+                i ++;
+
+                if (new RegExp(/y+/).test(_format) && new RegExp(/M+/).test(_format) && new RegExp(/d+/).test(_format) && k === 'd+') {
+                    i ++;
+                }
+            }
+        }
+          
+        this.currentDate = new Date(o['y+'], ( o['M+'] - 1 ), o['d+'], o['H+'], o['m+']);
         this.apply();
     }
 
@@ -365,21 +407,45 @@ class Datepicker {
      * @returns none
      */
     apply () {
-        this.syncData();
+        this.initData();
         this.picker.setCols(this.getPickerCols());
 
-        let year = this.currentDate.getFullYear(),
-            month = this.currentDate.getMonth() + 1,
-            date = this.currentDate.getDate(),
-            day = this.currentDate.getDay(),
-            hour = this.currentDate.getHours(),
-            minute = this.currentDate.getMinutes();        
-
-        this.picker.setValue([year, month, date, day, hour, minute]);        
+        this.syncPickerValue();
 
         if (this.onChange && typeof this.onChange) {
             this.onChange(this.value);
         }        
+    }
+
+    /**
+     * 将组件值同步至picker
+     * @returns none
+     */
+    syncPickerValue () {
+        let _format = this.valueformat;
+        let date = this.currentDate;
+        var pickerVals = [];
+
+        let o = {
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
+        };
+
+        for (let k in o) {
+            if (new RegExp(k).test(_format)) {
+                pickerVals.push(o[k]);
+            }
+        }               
+
+        if (new RegExp(/y+/).test(_format) && new RegExp(/M+/).test(_format) && new RegExp(/d+/).test(_format)) {
+            pickerVals = tools.insert(pickerVals, date.getDay(), 3);
+        }
+
+        this.picker.setValue(pickerVals);   
     }
 
     /**
@@ -472,21 +538,24 @@ class Datepicker {
         let date = this.currentDate;
 
         let o = {
-            "M+": date.getMonth() + 1,
-            "d+": date.getDate(),
-            "H+": date.getHours(),
-            "h+": date.getHours(),
-            "m+": date.getMinutes()
+            'y+': date.getFullYear(),
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'H+': date.getHours(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds()
         };
 
-        if (/(y+)/.test(_format)) {
-            _format = _format.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        }
-        
         for (let k in o) {
-            if (new RegExp("(" + k + ")").test(_format)) {
+            if (new RegExp('(' + k + ')').test(_format)) {
                 let val = o[k];
-                _format = _format.replace(RegExp.$1, (RegExp.$1.length == 1) ? (val) : (("00" + val).substr(("" + val).length)));
+
+                if (k !== 'y+') {
+                    _format = _format.replace(RegExp.$1, (RegExp.$1.length == 1) ? ( val ) : (('00' + val).substr(('' + val).length)));
+                } else {
+                    _format = _format.replace(RegExp.$1, val);
+                }
             }
         }
 

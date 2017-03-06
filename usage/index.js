@@ -137,18 +137,43 @@ let picker = new Picker({
  * picker 浮层
  */
 
-timer (function () {
-    let datepicker = new Datepicker({
-        id: 'datepicker',
-        defaultvalue: '2015/06/07 00:00',
-        min: '2000/01/12 12:12',
-        max: '2100/11/16 12:33',
-        displayformat: 'yyyy/MM/dd HH:mm',
-        valueformat: 'yyyy/MM/dd HH:mm',
-        onChange: function (val) {
-            console.log(val);
-        }
-    });    
+let datepicker1 = new Datepicker({
+    id: 'datepicker1',
+    defaultvalue: '2017/03/06 00:00',
+    min: '2000/01/12 12:12',
+    max: '2100/11/16 12:33',
+    displayformat: 'yyyy/MM/dd HH:mm',
+    valueformat: 'yyyy/MM/dd HH:mm',
+    showtime: true,
+    onChange: function (val) {
+        console.log(val);
+    }
+});
+
+let datepicker2 = new Datepicker({
+    id: 'datepicker2',
+    defaultvalue: '2015/06/07 00:00',
+    min: '2000/01/12 12:12',
+    max: '2100/11/16 12:33',
+    displayformat: 'yyyy/MM/dd HH:mm:ss',
+    valueformat: 'yyyy/MM/dd HH:mm:ss',
+    showtime: false,
+    onChange: function (val) {
+        console.log(val);
+    }
+});
+
+let datepicker3 = new Datepicker({
+    id: 'datepicker3',
+    defaultvalue: '2015/06/07 00:00',
+    min: '2000/01/12 12:12',
+    max: '2100/11/16 12:33',
+    displayformat: 'MM/dd HH:mm',
+    valueformat: 'MM/dd HH:mm',
+    showtime: true,
+    onChange: function (val) {
+        console.log(val);
+    }
 });
 
 

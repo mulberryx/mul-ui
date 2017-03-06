@@ -29,6 +29,7 @@ body {
   height: 100%;
   background: linear-gradient(to left, #8ccfff, #3a7bd5);
   font: 14px/1.8 'Helvetica Neue', Tahoma, 'Hiragino Sans GB', STXihei, 'WenQuanYi Micro Hei', 'Microsoft YaHei', SimSun, sans-serif;
+  -webkit-overflow-scrolling: touch;
 }
 a {
   text-decoration: none;
@@ -90,13 +91,16 @@ li {
   white-space: nowrap;
 }
 .ui-bar .link {
-  position: relative;
-  font-weight: 400;
+  position: absolute;
+  right: 0;
   top: 0;
+  min-width: 40px;
   padding: 0;
+  height: 2.2rem;
   font-size: 0.8rem;
   line-height: 2.2rem;
-  height: 2.2rem;
+  text-align: center;
+  font-weight: 400;
   color: #0894ec;
   border: 0;
   z-index: 20;
@@ -203,27 +207,19 @@ li {
 .ui-picker {
   position: relative;
   width: 100%;
-  min-height: 150px;
   padding: 13px 0px;
   font-size: 0;
   text-align: center;
   -webkit-mask-box-image: -webkit-linear-gradient(bottom, transparent, transparent 5%, white 20%, white 80%, transparent 95%, transparent);
   -webkit-mask-box-image: linear-gradient(to top, transparent, transparent 5%, white 20%, white 80%, transparent 95%, transparent);
 }
-.ui-picker:after {
-  content: '';
-  display: block;
-  clear: both;
-  height: 0;
-}
 .ui-picker .ui-picker-items-col {
-  position: relative;
-  top: 0px;
   height: 150px;
   width: 15%;
   display: inline-block;
   overflow: hidden;
   text-align: left;
+  vertical-align: top;
 }
 .ui-picker .ui-picker-items-col-wrapper {
   width: 100%;

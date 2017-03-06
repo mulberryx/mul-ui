@@ -73,7 +73,7 @@ module.exports = {
             jQuery: 'jquery'
         }),        
         new ExtractTextPlugin(devServer ? 'css/[name].css' : 'css/[name].min.css'),
-        (devServer ? {apply: function() {}} : new webpack.optimize.UglifyJsPlugin({
+        (devServer ? { apply: function() {} } : new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             },
@@ -103,10 +103,11 @@ module.exports = {
         })
     ],
     devServer:{
-        hot: true,
+        hot: false,
         inline: true,
         stats: 'errors-only',
         host: 'localhost',
-        port: '3030'
+        port: '3030',
+        host: '0.0.0.0'
     }
 };

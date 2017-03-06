@@ -236,9 +236,7 @@ export default class Scroller {
             snapOffset = max;  
         }
 
-        let offset = snapOffset - this.currMove;
-
-        this.move(offset, false);        
+        this.move(snapOffset, false);
     }
 
     /**
@@ -291,11 +289,17 @@ export default class Scroller {
 
     /**
      * 移动
-     * @param {number || undefined} 位移值
+     * @param {number} 位移值
+     * @param {boolean} 是否是当前位移的偏移量
      * @returns none
      */
-    move (offset) {
-        this.currMove += offset;
+    move (value, isOffset) {
+        if (isOffset) {
+            this.currMove += value;
+        } else {
+            this.currMove = value;
+        }
+        
 
         this.wrapper.style.transform = 'translateY(' + ( this.currMove + 'px' ) + ') translateZ(0px)';
         this.snapChange();

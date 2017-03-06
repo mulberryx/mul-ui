@@ -4,7 +4,6 @@ import Scroller from '../scroller';
 import pickerTemplate from 'html-loader!./picker.html';
 
 let pickerRender = tools.tmpl(pickerTemplate);
-console.log(pickerRender.toString());
 /**
  * Picker 选择组件
  * @class
@@ -85,25 +84,27 @@ class Picker {
      */
     setValue (valArr) {
         this.value = valArr || this.value;
-
+        
         if (this.value.length) {
             for (let i = this.value.length - 1; i >= 0; i --) {
                 let val = this.value[i];
-                let rows = this.cols[i].rows;
 
-                let _i = false;
+                if (this.cols[i]) {
+                    let rows = this.cols[i].rows;
+                    let _i = false;
 
-                for (let j = rows.length - 1; j >= 0; j --) {
-                    let row = rows[j];
+                    for (let j = rows.length - 1; j >= 0; j --) {
+                        let row = rows[j];
 
-                    if (row.value == val) {
-                        _i = j;
-                        break;
+                        if (row.value == val) {
+                            _i = j;
+                            break;
+                        }
                     }
-                }
 
-                if (_i !== false) {
-                    this.scrollers[i].scrollTo(_i);
+                    if (_i !== false) {
+                        this.scrollers[i].scrollTo(_i);
+                    }
                 }
             }
         } else {
