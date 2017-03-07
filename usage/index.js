@@ -173,4 +173,21 @@ let datepicker3 = new Datepicker({
     }
 });
 
+let datepicker4 = new Datepicker({
+    defaultvalue: '2015/06/07 00:00',
+    min: '2000/01/12 12:12',
+    max: '2100/11/16 12:33',
+    displayformat: 'MM/dd HH:mm',
+    valueformat: 'MM/dd HH:mm',
+    showtime: true,
+    onChange: function (val) {
+        console.log(val);
+    }
+});
+
+$('#datepicker4').click(function (e) {
+    datepicker4.open();
+    e.target.blur();
+});
+
 

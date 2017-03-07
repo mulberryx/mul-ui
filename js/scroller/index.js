@@ -268,7 +268,7 @@ export default class Scroller {
      * @returns {number} 子项高度
      */
     getSnapHeight () {
-        return this.wrapper.children[0].offsetHeight;
+        return this.wrapper.offsetHeight / this.wrapper.children.length;
     }
 
     /**

@@ -6,7 +6,6 @@ import Overlay from '../overlay';
 import Picker from '../picker';
 
 import datepickerTemplate from 'html-loader!./datepicker.html';
-
 /*
  * 默认配置
  */
@@ -14,7 +13,7 @@ let defaultConfig = {
     id: '',                             // 初始化容器
     defaultvalue: '',                   // 默认日期(时间戳，字符串，Date对象)
     min: '1970/01/01 00:00',            // 最小值
-    max: '2050/01/01 00:00',            // 最大值
+    max: '2030/01/01 00:00',            // 最大值
     displayformat: 'yyyy/MM/dd HH:mm',     // 日期显示格式
     valueformat: 'yyyy/MM/dd HH:mm',       // 日期值格式
     showtime: true,                        // 是否显示时分的选择
@@ -46,10 +45,14 @@ class Datepicker {
     constructor (options) {
         let _options = $.extend(true, {} , defaultConfig, options);
 
-        if (typeof _options.input === 'string') {
-            this.input = $('#' + _options.input);
+        if (_options.input) {
+            if (typeof _options.input === 'string') {
+                this.input = $('#' + _options.input);
+            } else {
+                this.input = $(_options.input);
+            }
         } else {
-            this.input = $(_options.input);
+            this.input = false;
         }
 
         this.value = _options.defaultvalue;
@@ -76,7 +79,7 @@ class Datepicker {
         if(!this.value) {
             this.currentDate = new Date();
         } else {
-            this.currentDate = new Date(this.value);
+            this.currentDate = this.toDate(this.value);
         }
 
         this.initData();
@@ -84,39 +87,18 @@ class Datepicker {
     }
 
     /**
-     * 初始化数据
-     * @returns none
-     */
-    initData () {
-        this._min = new Date(this.min);
-        this._max = new Date(this.max);
-
-        if (this.currentDate < this._min) {
-            this.currentDate = this._min;
-        }
-
-        if (this.currentDate > this._max) {
-            this.currentDate = this._max;
-        }
-
-        this.value = this.getFormatValue();
-        this.input.val(this.getFormatValue(this.displayformat));
-    }
-
-    /**
      * 初始化输入框
      * @returns none
      */
     initInput () {
+        if (!this.input) {
+            return false;
+        }
+
         let self = this;
 
         this.input.click(function () {
-            if (!self.overlay) {
-                self.initOverlay();
-                self.initPicker();
-            }
-
-            self.overlay.open();
+            self.open();
             self.input.blur();
         });  
 
@@ -145,26 +127,6 @@ class Datepicker {
 
         let pickerContainer = this.overlay.findElement('[data-role=picker]');
         let pickerCols = this.getPickerCols();
-
-        let _format = this.valueformat;
-        let date = this.currentDate;
-        var pickerVals = [];
-
-        let o = {
-            'y+': date.getFullYear(),
-            'M+': date.getMonth() + 1,
-            'd+': date.getDate(),
-            'H+': date.getHours(),
-            'h+': date.getHours(),
-            'm+': date.getMinutes(),
-            's+': date.getSeconds()
-        };
-        
-        for (let k in o) {
-            if (new RegExp("(" + k + ")").test(_format)) {
-                pickerVals.push(o[k]);
-            }
-        }
 
         this.picker = new Picker({
             container: pickerContainer,
@@ -402,9 +364,24 @@ class Datepicker {
                 }
             }
         }
-          
+        
         this.currentDate = new Date(o['y+'], ( o['M+'] - 1 ), o['d+'], o['H+'], o['m+']);
-        this.apply();
+        
+        if (this.currentDate < this._min) {
+            this.currentDate = this._min;
+        }
+
+        if (this.currentDate > this._max) {
+            this.currentDate = this._max;
+        }
+
+        this.value = this.getFormatValue();
+
+        this.syncView();
+
+        if (this.onChange && typeof this.onChange) {
+            this.onChange(this.value);
+        }
     }
 
     /**
@@ -412,14 +389,67 @@ class Datepicker {
      * @returns none
      */
     apply () {
-        this.initData();
-        this.picker.setCols(this.getPickerCols());
+        let currentDate = this.currentDate;
 
-        this.syncPickerValue();
+        this._min = this.toDate(this.min);
+        this._max = this.toDate(this.max);
 
-        if (this.onChange && typeof this.onChange) {
-            this.onChange(this.value);
+        if (currentDate < this._min) {
+            currentDate = this._min;
+        }
+
+        if (currentDate > this._max) {
+            currentDate = this._max;
+        }
+
+        if (currentDate !== this.currentDate) {
+            this.currentDate = currentDate;
+            this.value = this.getFormatValue();
+
+            if (this.onChange && typeof this.onChange) {
+                this.onChange(this.value);
+            }       
+        }
+
+        this.syncView();
+    }
+
+    /**
+     * 数据同步至视图
+     * @returns none
+     */
+    syncView () {
+        if (this.input) {
+            this.input.val(this.getFormatValue(this.displayformat));
+        }
+
+        if (this.picker) {
+            this.picker.setCols(this.getPickerCols());
+            this.syncPickerValue();
         }        
+    }
+
+    /**
+     * 初始化数据
+     * @returns none
+     */
+    initData () {
+        this._min = this.toDate(this.min);
+        this._max = this.toDate(this.max);
+
+        if (this.currentDate < this._min) {
+            this.currentDate = this._min;
+        }
+
+        if (this.currentDate > this._max) {
+            this.currentDate = this._max;
+        }
+
+        this.value = this.getFormatValue();
+
+        if (this.input) {
+            this.input.val(this.getFormatValue(this.displayformat));
+        }
     }
 
     /**
@@ -450,7 +480,7 @@ class Datepicker {
             pickerVals = tools.insert(pickerVals, date.getDay(), 3);
         }
 
-        this.picker.setValue(pickerVals);   
+        this.picker.setValue(pickerVals);
     }
 
     /**
@@ -460,8 +490,6 @@ class Datepicker {
      */
     setMin (min) {
         this.min = min;
-        this._min = new Date(this.min);
-
         this.apply();
     }
 
@@ -472,8 +500,6 @@ class Datepicker {
      */
     setMax (max) {
         this.max = max;
-        this._max = new Date(this.max);
-
         this.apply();
     }
 
@@ -484,8 +510,17 @@ class Datepicker {
      */
     setValue (val) {
         this.value = val;
-        this.currentDate = new Date(val);
-        this.input.val(this.val);
+        this.currentDate = this.toDate(this.value);
+
+        if (this.picker) {
+            this.syncPickerValue();
+        }
+
+        if (this.onChange && typeof this.onChange) {
+            this.onChange(this.value);
+        }        
+
+        this.apply();
     }
 
     /**
@@ -503,8 +538,8 @@ class Datepicker {
      * @returns none
      */
     getDate (name, date) {
-        if (date instanceof Date) {
-            date = new Date(date);
+        if (!(date instanceof Date)) {
+            date = this.toDate(date);
         }
 
         let val;
@@ -565,7 +600,62 @@ class Datepicker {
         }
 
         return _format;        
-    }   
+    }
+
+    /**
+     * 字符串转日期对象
+     * @param {string} 被转换的字符串
+     * @returns none
+     */    
+    toDate (str) {
+        let reg = /^(\d{4})[-\/]((0?[1-9])|(1[0-2]))([-\/](([0-2]?[1-9])|31)([\sT](([0-1]?[0-9])|(2[0-3]))(:([0-5]?[0-9])(:([0-5]?[0-9]))?)?)?)?$/;
+        let reg1 = /^(\d{4})[-\/]((0?[1-9])|(1[0-2]))([-\/](([0-2]?[1-9])|31))?$/;
+        let reg2 = /^(([0-1]?[0-9])|(2[0-3]))(:([0-5]?[0-9])(:([0-5]?[0-9]))?)?$/
+
+        let today = new Date();
+
+        if (reg.test(str)) {
+            let arr = str.split(/[\sT]/);
+            let date = arr[0];
+            let time = arr[1];
+
+            let _arr = date.split(/[\/-]/);
+
+            if (!reg1.test(date)) {
+                _arr.push('01');
+            }
+
+            let _str = _arr.join('\/');
+            
+            if (time && reg2.test(time)) {
+                let __arr = time.split(/:/);
+
+                for (var i = 0, len = 3; i < len; i ++) {
+                    __arr[i] = __arr[i] || '00';
+                }
+
+                _str += ' ';
+                _str += __arr.join(':');
+            }
+
+            return new Date(_str);
+        } else {
+            return new Date();
+        }  
+    }
+
+    /**
+     * 打开日期选择组件
+     * @returns none
+     */    
+    open () {
+        if (!this.overlay) {
+            this.initOverlay();
+            this.initPicker();
+        }
+
+        this.overlay.open();
+    }
 }
 
 /**

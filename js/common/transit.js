@@ -89,6 +89,8 @@ class Transit {
         this.ins = 16.7 / this.duration;
         this.animationFrame = new Animation();
 
+        this.state = 'pending'; // fulfilled; pending; rejected; settled;
+
         this.transiting = false;
 
         let self = this;
@@ -100,7 +102,7 @@ class Transit {
 
     /**
      * 递归
-     * @return none
+     * @returns none
      */    
     recursion () {
         let self = this;
@@ -114,7 +116,15 @@ class Transit {
             try {
                 self.action();
             } catch (e) {
+                self.state = 'rejected';
+                self.animationFrame.cancel();
+                self.transiting = false;    
+                       
                 console.error(e);
+
+                if (self.error && typeof self.error === 'function') {
+                    self.error(e);
+                }
             }
 
             if (self.percentage < 1 && self.transiting) {
@@ -122,12 +132,12 @@ class Transit {
             }
         };     
 
-        _run();   
+        _run();
     }
 
     /**
      * 重新开始
-     * @return { Transit } 当前实例
+     * @returns { Transit } 当前实例
      */
     restart () {
         return this.start();
@@ -135,25 +145,35 @@ class Transit {
 
     /**
      * 开始渐变
-     * @return { Transit } 当前实例
+     * @returns { Transit } 当前实例
      */
     start () {
-        this.transiting = true;
-        this.recursion();
+        if (this.state === 'pending') {
+            this.transiting = true;
+
+            let self = this;
+
+            setTimeout(function () {
+                self.recursion();
+            });
+        }
 
         return this;
     }
 
     /**
      * 停止
-     * @return { Transit } 当前实例
+     * @returns { Transit } 当前实例
      */    
     stop () {
-        this.animationFrame.cancel();
-        this.transiting = false;
+        if (this.state === 'pending') {
+            this.animationFrame.cancel();
+            this.transiting = false;
 
-        if (this.success) {
-            this.success();
+            if (this.success) {
+                this.success();
+                this.state = 'fulfilled';
+            }
         }
 
         return this;
