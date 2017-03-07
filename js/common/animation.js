@@ -22,10 +22,10 @@ class AnimationFrame {
     constructor () {
         this.lastTime = 0;
 
-        if (!window.requestAnimationFrame) {
+        if (window.requestAnimationFrame) {
             this.request = function (action) {
                 let currTime = new Date().getTime();
-                let timeToCall = Math.max(0, 16.7 - (currTime - this.lastTime));
+                let timeToCall = Math.max(0, 16.667 - (currTime - this.lastTime));
 
                 this.id = window.setTimeout(function () {
                     action();

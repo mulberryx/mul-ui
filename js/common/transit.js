@@ -33,7 +33,7 @@ let baseEasings = {
     Bounce: function( p ) {
         var pow2, bounce = 4;
 
-        while ( p < ( ( pow2 = Math.pow( 2, --bounce ) ) - 1 ) / 11 ) {}
+        while ( p < ( ( pow2 = Math.pow( 2, -- bounce ) ) - 1 ) / 11 ) {}
         return 1 / Math.pow( 4, 3 - bounce ) - 7.5625 * Math.pow( ( pow2 * 3 - 2 ) / 22 - p, 2 );
     }
 };
@@ -100,30 +100,21 @@ class Transit {
 
     /**
      * 递归
-     * @param { object } 配置对象
-     * @return { number } 计时器id
+     * @return none
      */    
     recursion () {
         let self = this;
 
         var _run = function () {
+            let last = self.percentage;
 
             self.percentage = Math.min(1, self.percentage + self.ins);
-
-            let curr = self.percentage;
-            let last = self.percentage - self.ins;
-
-            self.coefficient = self.easing(curr) - self.easing(last);
-
+            self.coefficient = self.easing(self.percentage) - self.easing(last);
 
             try {
                 self.action();
             } catch (e) {
-                if (self.error) {
-                    self.error(e);
-                } else {
-                    console.error(e);
-                }
+                console.error(e);
             }
 
             if (self.percentage < 1 && self.transiting) {
@@ -149,6 +140,7 @@ class Transit {
     start () {
         this.transiting = true;
         this.recursion();
+
         return this;
     }
 

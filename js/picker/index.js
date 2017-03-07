@@ -69,12 +69,30 @@ class Picker {
                 wrapper: wrapper[0],
                 onChange: function (data) {
                     self.value[i] = data.value;
-                    self.onChange(self.value);
+                    self._onChange();
                 }
             };
 
             self.scrollers.push(new Scroller(options));       
         });       
+    }
+
+    /**
+     * 值改变
+     * @returns none
+     */
+    _onChange () {
+        let transiting = false;
+
+        for (var i = this.scrollers.length - 1; i >= 0; i--) {
+            if (this.scrollers[i].transiting) {
+                transiting = true;
+            }
+        }
+
+        if (!transiting) {
+            this.onChange(this.value);
+        }
     }
 
     /**

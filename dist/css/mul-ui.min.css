@@ -27,7 +27,6 @@ td {
 }
 body {
   height: 100%;
-  background: linear-gradient(to left, #8ccfff, #3a7bd5);
   font: 14px/1.8 'Helvetica Neue', Tahoma, 'Hiragino Sans GB', STXihei, 'WenQuanYi Micro Hei', 'Microsoft YaHei', SimSun, sans-serif;
   -webkit-overflow-scrolling: touch;
 }
@@ -110,99 +109,6 @@ li {
   outline: none;
   border-radius: 3px;
   border: 1px solid #bbbbbb;
-}
-.ui-btn {
-  display: inline-block;
-  padding: 6px 10px;
-  cursor: pointer;
-  opacity: 1;
-  color: #FFF;
-  font-size: 0.85rem;
-  text-shadow: rgba(0, 0, 0, 0.9) 0px 1px 2px;
-  background: #4F6275;
-  border: 1px solid #242424;
-  text-align: center;
-  -webkit-border-radius: 4px;
-  -khtml-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -khtml-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -moz-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -o-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -webkit-transition: all 0.1s linear;
-  -khtml-transition: all 0.1s linear;
-  -moz-transition: all 0.1s linear;
-  -o-transition: all 0.1s linear;
-  transition: all 0.1s linear;
-}
-.ui-btn:hover {
-  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -khtml-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -o-box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px, inset rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(0, 0, 0, 0.25) 0px 0px 0px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-}
-.ui-btn:active {
-  -webkit-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0) 0px 1px 0px, inset rgba(0, 0, 0, 0.5) 0px 0px 5px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -khtml-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0) 0px 1px 0px, inset rgba(0, 0, 0, 0.5) 0px 0px 5px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -moz-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0) 0px 1px 0px, inset rgba(0, 0, 0, 0.5) 0px 0px 5px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  -o-box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0) 0px 1px 0px, inset rgba(0, 0, 0, 0.5) 0px 0px 5px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-  box-shadow: rgba(255, 255, 255, 0.25) 0px 1px 0px, inset rgba(255, 255, 255, 0) 0px 1px 0px, inset rgba(0, 0, 0, 0.5) 0px 0px 5px, inset rgba(255, 255, 255, 0.03) 0px 20px 0px, inset rgba(0, 0, 0, 0.15) 0px -20px 20px, inset rgba(255, 255, 255, 0.05) 0px 20px 20px;
-}
-.ui-btn.ui-btn-block {
-  width: 100%;
-}
-.shine {
-  display: block;
-  position: relative;
-  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(50%, #ffffff), color-stop(100%, rgba(255, 255, 255, 0)));
-  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
-  background: -o-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
-  background: -ms-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#00ffffff', GradientType=1);
-  background: linear-gradient(left, rgba(255, 255, 255, 0) 0%, #ffffff 50%, rgba(255, 255, 255, 0) 100%);
-  padding: 0px 8px;
-  top: -8px;
-  left: -24px;
-  height: 1px;
-  -webkit-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 5px;
-  -khtml-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 5px;
-  -moz-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 5px;
-  -o-box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 5px;
-  box-shadow: rgba(255, 255, 255, 0.2) 0px 1px 5px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -khtml-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-.ui-btn:hover .shine {
-  left: 24px;
-}
-.ui-btn:active .shine {
-  opacity: 0;
-}
-.ui-btn.ui-btn-gray {
-  background: #555;
-}
-.ui-btn.ui-btn-info {
-  background: #00518e;
-}
-.ui-btn.ui-btn-green {
-  background: #477343;
-}
-.ui-btn.ui-btn-red {
-  background: #723131;
-}
-.ui-btn.ui-btn-purple {
-  background: #4b3f5e;
-}
-.ui-btn.ui-btn-orange {
-  background: #624529;
 }
 .ui-picker {
   position: relative;
@@ -306,10 +212,10 @@ li {
   bottom: -13rem;
   height: 13rem;
   border: none;
-  transition: bottom 0.2s ease-out;
-  -moz-transition: bottom 0.2s ease-out;
-  -webkit-transition: bottom 0.2s ease-out;
-  -o-transition: bottom 0.2s ease-out;
+  transition: bottom 0.3s ease-out;
+  -moz-transition: bottom 0.3s ease-out;
+  -webkit-transition: bottom 0.3s ease-out;
+  -o-transition: bottom 0.3s ease-out;
   border-radius: 0;
   display: block;
 }

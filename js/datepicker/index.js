@@ -14,7 +14,7 @@ let defaultConfig = {
     id: '',                             // 初始化容器
     defaultvalue: '',                   // 默认日期(时间戳，字符串，Date对象)
     min: '1970/01/01 00:00',            // 最小值
-    max: '2100/01/01 00:00',            // 最大值
+    max: '2050/01/01 00:00',            // 最大值
     displayformat: 'yyyy/MM/dd HH:mm',     // 日期显示格式
     valueformat: 'yyyy/MM/dd HH:mm',       // 日期值格式
     showtime: true,                        // 是否显示时分的选择
@@ -27,7 +27,7 @@ let defaultConfig = {
  * 滚动日期组件
  * @class
  * @options: {
-        id: {string} 容器id
+        input: {element|string} 输入框对象或输入框id
         defaultvalue: {string} 默认值
         min: {string} 开始时间
         max: {string} 结束时间
@@ -46,7 +46,12 @@ class Datepicker {
     constructor (options) {
         let _options = $.extend(true, {} , defaultConfig, options);
 
-        this.input = $('#' + _options.id);
+        if (typeof _options.input === 'string') {
+            this.input = $('#' + _options.input);
+        } else {
+            this.input = $(_options.input);
+        }
+
         this.value = _options.defaultvalue;
         this.min = _options.min;
         this.max = _options.max;

@@ -133,12 +133,9 @@ let picker = new Picker({
     }
 });
 
-/**
- * picker 浮层
- */
-
 let datepicker1 = new Datepicker({
     id: 'datepicker1',
+    input: document.getElementById('datepicker1'),
     defaultvalue: '2017/03/06 00:00',
     min: '2000/01/12 12:12',
     max: '2100/11/16 12:33',
@@ -151,7 +148,7 @@ let datepicker1 = new Datepicker({
 });
 
 let datepicker2 = new Datepicker({
-    id: 'datepicker2',
+    input: 'datepicker2',
     defaultvalue: '2015/06/07 00:00',
     min: '2000/01/12 12:12',
     max: '2100/11/16 12:33',
@@ -164,7 +161,7 @@ let datepicker2 = new Datepicker({
 });
 
 let datepicker3 = new Datepicker({
-    id: 'datepicker3',
+    input: 'datepicker3',
     defaultvalue: '2015/06/07 00:00',
     min: '2000/01/12 12:12',
     max: '2100/11/16 12:33',

@@ -32,6 +32,7 @@ export default class Scroller {
         this.$snaps = null;
 
         this.currMove = 0;
+        this.transiting = false;
 
         this.init();
     }
@@ -124,6 +125,9 @@ export default class Scroller {
 
             self.touchstartmove = false;
         });
+
+        this.wrapper.style.transform = 'translateY(0) translateZ(0)';
+        this.wrapper.style.webkitTransform = 'translateY(0) translateZ(0)';
     }    
 
     /**
@@ -134,6 +138,8 @@ export default class Scroller {
     scroll (speed) {
         let offset = speed * this.snapHeight * this.snapNumber;
         let destination = this.currMove + offset;
+
+        offset = parseInt(destination / this.snapHeight) * this.snapHeight - this.currMove; 
 
         let min = this.getMin();
         let max = this.getMax();
@@ -146,6 +152,7 @@ export default class Scroller {
 
         // 移除节点激活状态
         this.$snaps.removeClass('ui-picker-selected');
+        this.transiting = true;
 
         let self = this;
 
@@ -168,6 +175,7 @@ export default class Scroller {
             easing: 'easeOutQuad'
         }).then(function () {
             self.keepSnap();
+            self.transiting = false;
 
             if (self.onChange && typeof self.onChange === 'function') {
                 self.onChange(self.getData());
@@ -301,7 +309,8 @@ export default class Scroller {
         }
         
 
-        this.wrapper.style.transform = 'translateY(' + ( this.currMove + 'px' ) + ') translateZ(0px)';
+        this.wrapper.style.transform = 'translateY(' + ( this.currMove + 'px' ) + ') translateZ(0)';
+        this.wrapper.style.webkitTransform = 'translateY(' + ( this.currMove + 'px' ) + ') translateZ(0)';
         this.snapChange();
     }
 
