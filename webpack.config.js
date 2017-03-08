@@ -30,6 +30,7 @@ module.exports = {
         'vendor': ['jquery'],
         'datepicker': './js/datepicker/index.js',
         'overlay': './js/overlay/index.js',
+        'picker': './js/overlay/index.js',
         'mul-ui': './js/mul-ui.js',
         'index': './usage/index.js'
     },

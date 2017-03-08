@@ -181,7 +181,7 @@ let datepicker4 = new Datepicker({
     valueformat: 'MM/dd HH:mm',
     showtime: true,
     onChange: function (val) {
-        console.log(val);
+        $('#datepicker4').val(val);
     }
 });
 
