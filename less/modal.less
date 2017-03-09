@@ -1,13 +1,11 @@
-@import "mask.less";
-
-.ui-overlay {
+.ui-modal {
     position: fixed;
     top: 25%;
     left: 20px;
     right: 20px;
     height: 160px;
     margin: auto; 
-    border: 1px solid #3085b7;
+    border: 1px solid #333;
     background: #fff;
     border-radius: 3px;
     z-index: 61; 
@@ -35,32 +33,44 @@
             bottom: 0;            
         }
 
-        .ui-overlay-close {
+        .ui-modal-close {
             display: none;
         }
     }
 
-    .ui-overlay-close {
+    .ui-modal-close {
         position: absolute;
-        width: 18px;
-        height: 18px;
-        right: -9px;
-        top: -9px;
+        width: 20px;
+        height: 20px;
+        right: -10px;
+        top: -10px;
         font-size: 14px;
         color: black;
-        line-height: 18px;
+        line-height: 20px;
         text-align: center;
         border-radius: 30px;
-        background: #3085b7;
-        color: #fff;     
+        background: #333;
+        color: #fff;
         cursor: pointer;
     }
 
-    .ui-overlay-footer {
+    .ui-modal-footer {
         position: absolute;
         bottom: 0;
         margin: 10px 0;
         text-align: center;
         width: 100%;        
     }
+}
+
+.ui-modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .3;
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);    
+    background: #000;  
+    z-index: 60;
 }

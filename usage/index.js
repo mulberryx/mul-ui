@@ -3,9 +3,9 @@
  * @author MulberryX
  */
 
-import Overlay from '../js/overlay';
+import Modal from '../js/modal';
 import Picker from '../js/picker';
-import Datepicker from '../js/datepicker';
+import Calendar from '../js/calendar';
 
 var timer = function (func) {
     var start = new Date();
@@ -18,10 +18,14 @@ var timer = function (func) {
  * 半浮层
  */
 $('#half-popup').click(function () {
-    Overlay.create({
+    Modal.create({
         mask: true,
         picker: true,
-        closeIcon: false
+        closeIcon: false,
+        once: true,
+        onClose: function () {
+            this.remove();
+        }
     }).open(); 
 });
 
@@ -29,10 +33,11 @@ $('#half-popup').click(function () {
  * 窗口浮层
  */
 $('#popup').click(function () {
-    Overlay.create({
+    Modal.create({
         mask: true,
         type: 'popup',
-        closeIcon: true
+        closeIcon: true,
+        once: true
     }).open();
 });
 
@@ -40,10 +45,11 @@ $('#popup').click(function () {
  * 提示窗口
  */
 $('#alert').click(function () {
-    Overlay.alert({
+    Modal.alert({
         mask: true,
         type: 'popup',
         closeIcon: false,
+        once: true,
         message: 'hello, 我是一个提示窗口'
     });
 });
@@ -52,10 +58,11 @@ $('#alert').click(function () {
  * 确认窗口
  */
 $('#confirm').click(function () {
-    Overlay.confirm({
+    Modal.confirm({
         mask: true,
         type: 'popup',
         closeIcon: false,
+        once: true,
         message: 'hello, 我是一个确认窗口'
     });
 });
@@ -133,7 +140,7 @@ let picker = new Picker({
     }
 });
 
-let datepicker1 = new Datepicker({
+let datepicker1 = new Calendar({
     id: 'datepicker1',
     input: document.getElementById('datepicker1'),
     defaultvalue: '2017/03/06 00:00',
@@ -147,7 +154,7 @@ let datepicker1 = new Datepicker({
     }
 });
 
-let datepicker2 = new Datepicker({
+let datepicker2 = new Calendar({
     input: 'datepicker2',
     defaultvalue: '2015/06/07 00:00',
     min: '2000/01/12 12:12',
@@ -160,7 +167,7 @@ let datepicker2 = new Datepicker({
     }
 });
 
-let datepicker3 = new Datepicker({
+let datepicker3 = new Calendar({
     input: 'datepicker3',
     defaultvalue: '2015/06/07 00:00',
     min: '2000/01/12 12:12',
@@ -173,7 +180,7 @@ let datepicker3 = new Datepicker({
     }
 });
 
-let datepicker4 = new Datepicker({
+let datepicker4 = new Calendar({
     defaultvalue: '2015/06/07 00:00',
     min: '2000/01/12 12:12',
     max: '2100/11/16 12:33',

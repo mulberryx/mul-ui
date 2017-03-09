@@ -11,7 +11,7 @@ class Mask {
      * @constructor
      */
     constructor () {
-        this.ele = $('<div class="ui-overlay-mask"></div>');
+        this.ele = $('<div class="ui-modal-mask"></div>');
         this.ele.click(function () {
             Tools.triggerEvent(EVENTS['ACTION:MASK:CLICK']);
         });

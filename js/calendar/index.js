@@ -2,10 +2,10 @@
 
 import tools from '../common/tools';
 import { WEEK_CN, NUMBER_CN, LEEP_MONTH, NATURE_LIMITS, DATE_UNITS } from './const';
-import Overlay from '../overlay';
+import Modal from '../modal';
 import Picker from '../picker';
 
-import datepickerTemplate from 'html-loader!./datepicker.html';
+import datepickerTemplate from 'html-loader!./calendar.html';
 /*
  * 默认配置
  */
@@ -35,7 +35,7 @@ let defaultConfig = {
         onChange: {function} 值改变回调
    } 
  */
-class Datepicker {
+class Calendar {
 
     /**
      * 构造函数
@@ -65,7 +65,7 @@ class Datepicker {
 
         this.onChange = _options.onChange;
 
-        this.overlay = null;
+        this.modal = null;
         this.picker = null;
 
         this.init();
@@ -109,8 +109,8 @@ class Datepicker {
      * 初始化浮层组件
      * @returns none
      */
-    initOverlay () {
-        this.overlay = new Overlay({
+    initModal () {
+        this.modal = new Modal({
             mask: true,
             picker: true,
             close: false,
@@ -125,7 +125,7 @@ class Datepicker {
     initPicker () {
         let self = this;
 
-        let pickerContainer = this.overlay.findElement('[data-role=picker]');
+        let pickerContainer = this.modal.findElement('[data-role=picker]');
         let pickerCols = this.getPickerCols();
 
         this.picker = new Picker({
@@ -485,7 +485,7 @@ class Datepicker {
 
     /**
      * 设置限制开始值
-     * @param { number | string } 时间戳 | 符合格式的字符串
+     * @param {number|string} 时间戳 | 符合格式的字符串
      * @returns none
      */
     setMin (min) {
@@ -495,7 +495,7 @@ class Datepicker {
 
     /**
      * 设置限制结束值
-     * @param { number | string } 时间戳 | 符合格式的字符串
+     * @param {number|string} 时间戳 | 符合格式的字符串
      * @returns none
      */
     setMax (max) {
@@ -649,22 +649,22 @@ class Datepicker {
      * @returns none
      */    
     open () {
-        if (!this.overlay) {
-            this.initOverlay();
+        if (!this.modal) {
+            this.initModal();
             this.initPicker();
         }
 
-        this.overlay.open();
+        this.modal.open();
     }
 }
 
 /**
  * 添加控件值变更监听
- * @param { object } 日期控件配置
- * @returns { datepicker } 日期选择控件
+ * @param {object} 日期控件配置
+ * @returns {datepicker} 日期选择控件
  */
-Datepicker.create = function (options) {
-    return new Datepicker(options);
+Calendar.create = function (options) {
+    return new Calendar(options);
 };
 
-export default Datepicker
+export default Calendar

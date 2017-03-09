@@ -28,10 +28,10 @@ const ASSET_PATH = devServer ? '/dist' : './dist';
 module.exports = {
     entry: {
         'vendor': ['jquery'],
-        'datepicker': './js/datepicker/index.js',
-        'overlay': './js/overlay/index.js',
-        'picker': './js/overlay/index.js',
-        'mul-ui': './js/mul-ui.js',
+        'modal': './js/modal/index.js',
+        'picker': './js/picker/index.js',        
+        'calendar': './js/calendar/index.js',
+        'mul': './js/mul.js',
         'index': './usage/index.js'
     },
     output: {
@@ -92,23 +92,14 @@ module.exports = {
             minify: {                            
                 removeComments: true,
                 collapseWhitespace: true
-            },
-            static: {
-                'vendor': '/js/vendor.bundle.js',
-                'mulUi': {
-                    js: '/js/mul-ui.js',
-                    css: '/css/mul-ui.css'
-                },
-                'index': '/js/index.js'
-            }
+            }        
         })
     ],
     devServer:{
         hot: false,
-        inline: true,
-        stats: 'errors-only',
+        inline: false,
+        stats: { colors: true },
         host: 'localhost',
-        port: '3030',
-        host: '0.0.0.0'
+        port: '3030'
     }
 };

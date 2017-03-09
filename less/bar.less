@@ -1,0 +1,75 @@
+.ui-bar {
+    position: relative;
+    width: 100%;
+    z-index: 10;
+    height: 2.5rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    background-color: #333;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+
+
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: auto;
+        top: auto;
+        height: 1px;
+        width: 100%;
+        background-color: #e7e7e7;
+        display: block;
+        z-index: 15;
+        transform-origin: 50% 100%;
+    }
+
+    .title {
+        position: absolute;
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin: 0 -0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 2.5rem;
+        color: #ffffff; 
+        text-align: center;
+        white-space: nowrap;        
+    }
+
+    .link {
+        position: absolute;
+        right: 0;
+        top: 0;
+        min-width: 40px;
+        padding: 0;
+        height: 2.5rem;
+        font-size: 0.85rem;
+        line-height: 2.4rem;
+        text-align: center;        
+        font-weight: 400;        
+        color: #0894ec;
+        border: 0;   
+        z-index: 20;     
+    }
+
+    &.ui-bar-header {
+        position: absolute;     
+        top: 0;
+    }
+
+    &.ui-bar-footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 2.75rem;
+        padding: 0; 
+
+        &:after {
+            top: 0;
+            bottom: auto;
+        }         
+    }
+}

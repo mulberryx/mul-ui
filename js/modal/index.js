@@ -12,15 +12,15 @@ import confirmTemplate from 'html-loader!./templates/confirm.html';
         mask：{boolean} 是否显示浮层遮罩
         picker: {boolean} 是否是选择弹出窗
         content：{string} 弹出窗口的内容
+        once: {boolean} 关闭弹窗时是否清除元素
         onInit: {function} 初始化钩子函数
         onClose：{function} 关闭窗口回调
-        closeIcon: {boolean} 是否显示关闭icon
    }
  */
 
 let $body = $(document.body);
 
-class Overlay {
+class Modal {
     /**
      * @constructor
      * @param {object} 配置对象     
@@ -29,9 +29,11 @@ class Overlay {
         this.mask = options.mask;
         this.picker = options.picker;
         this.content = options.content;
-        this.closeIcon = options.closeIcon;
+        this.once = options.once;
+
         this.onClose = options.onClose;
         this.onInit = options.onInit;
+
         this.isOpen = false;
 
         this.create();
@@ -44,25 +46,20 @@ class Overlay {
     create () {
         let self = this;
 
-        this.ele = $('<div class="ui-overlay"></div>');
+        this.ele = $('<div class="ui-modal"></div>');
         this.ele.html(this.content);
 
         $body.append(this.ele);
 
         if (this.picker) {
             this.ele.addClass('picker');
-
-            tools.addEventListener(EVENTS['ACTION:MASK:CLICK'], function () {
-                if (self.isOpen) {
-                    self.close();
-                }
-            });
         }
 
-        if (this.close) {
-            this.closeBtn = $('<div class="ui-overlay-close" data-role="close">X</div>');
-            this.ele.append(this.closeBtn);
-        }
+        tools.addEventListener(EVENTS['ACTION:MASK:CLICK'], function () {
+            if (self.isOpen) {
+                self.close();
+            }
+        });
 
         this.ele.on('click', '[data-role=close]', function (e) {
             self.close();
@@ -102,6 +99,10 @@ class Overlay {
 
         if (this.onClose && typeof this.onClose === 'function') {
             this.onClose.apply(this);
+        }
+
+        if (this.once) {
+            this.remove();
         }
     }
 
@@ -149,8 +150,8 @@ class Overlay {
  * @param {object} 浮层配置对象  
  * @returns none
  */
-Overlay.create = function (options) {
-    return new Overlay(options);
+Modal.create = function (options) {
+    return new Modal(options);
 };
 
 /**
@@ -162,7 +163,7 @@ Overlay.create = function (options) {
     }
  * @returns none
  */
-Overlay.alert = function (options) {
+Modal.alert = function (options) {
     let _options = {
         mask: true,
         close: false,
@@ -183,7 +184,7 @@ Overlay.alert = function (options) {
         }
     };
 
-    new Overlay(_options);
+    new Modal(_options);
 };
 
 /**
@@ -196,7 +197,7 @@ Overlay.alert = function (options) {
     }
  * @returns none
  */
-Overlay.confirm = function (options) {
+Modal.confirm = function (options) {
     let _options = {
         mask: true,
         close: false,
@@ -217,7 +218,7 @@ Overlay.confirm = function (options) {
         }
     };
 
-    new Overlay(_options);
+    new Modal(_options);
 };
 
-export default Overlay;
+export default Modal;
