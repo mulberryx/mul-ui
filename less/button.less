@@ -1,18 +1,22 @@
 .ui-btn {
     display: inline-block;
-    padding: 6px 10px;
+    line-height: 1;
+    white-space: nowrap;
     cursor: pointer;
-    opacity: 1;
-    
-    color: #FFF;
-    font-size: 0.85rem;
-    text-shadow: rgba(0, 0, 0, 0.9) 0px 1px 2px;
-    
-    background: #4F6275;
-    border: 1px solid #242424;
-
+    background: #555;
+    color: #fff;
+    -webkit-appearance: none;
     text-align: center;
-   
+    box-sizing: border-box;
+    outline: none;
+    margin: 0;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+
     -webkit-border-radius: 4px;
      -khtml-border-radius: 4px;
        -moz-border-radius: 4px;
@@ -27,7 +31,7 @@
      -khtml-transition: all 0.1s linear;
        -moz-transition: all 0.1s linear;
          -o-transition: all 0.1s linear;
-            transition: all 0.1s linear;
+            transition: all 0.1s linear;    
 }
 
 .ui-btn:hover {
@@ -79,9 +83,9 @@
 .ui-btn:hover .shine {left: 24px;}
 .ui-btn:active .shine {opacity: 0;}
 
-.ui-btn.ui-btn-gray {background: #555;}
-.ui-btn.ui-btn-info {background: #00518e;}
-.ui-btn.ui-btn-green {background: #477343;}
-.ui-btn.ui-btn-red {background: #723131;}
+.ui-btn.ui-btn-info {background: @color-light-blue;}
+.ui-btn.ui-btn-success {background: @color-success;}
+.ui-btn.ui-btn-danger {background: @color-danger;}
+
 .ui-btn.ui-btn-purple {background: #4b3f5e;}
 .ui-btn.ui-btn-orange {background: #624529;}

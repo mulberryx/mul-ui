@@ -14,6 +14,7 @@
   "homepage": "https://github.com/mulberryx/mul-ui#readme",
   "dependencies": {
     "jquery": "^1.12.4",
+    "zepto": "latest",
     "less": "latest",
     "webpack": "latest",
     "webpack-dev-server": "latest",

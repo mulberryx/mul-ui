@@ -26,16 +26,16 @@
     .tab-item {
         width: 100%;
         display: block;
-        font-size: 1rem;
-        color: #333333;
+        font-size: @font-size-default;
+        color: #8391a5;
         padding: 5px 15px 3px 15px;
         text-align: center;
         border-bottom: 2px solid transparent;
 
         &.active {
             position: relative;
-            border-bottom: 2px solid #333;
-            color: #333;
+            border-bottom: 2px solid @color-extra-light-blue;
+            color: @color-extra-light-blue;
             z-index: 100;
         } 
     }
@@ -43,13 +43,13 @@
     &.ui-bar-footer {
         .tab-item {
             height: 100%;
-            color: #ffffff;
+            color: @color-dark-white;
             font-size: 0.85rem;
             padding: 5px 15px;
 
             &.active {
                 border-bottom: none;
-                color: #0894ec;
+                color: @color-white;
             }
         }
         

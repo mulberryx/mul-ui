@@ -31,8 +31,8 @@ module.exports = {
         'modal': './js/modal/index.js',
         'picker': './js/picker/index.js',        
         'calendar': './js/calendar/index.js',
-        'mul': './js/mul.js',
-        'index': './usage/index.js'
+        'mul': './js/index.js',
+        'usage': './usage/index.js'
     },
     output: {
         path: ASSET_PATH,
