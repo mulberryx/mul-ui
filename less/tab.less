@@ -34,8 +34,8 @@
 
         &.active {
             position: relative;
-            border-bottom: 2px solid @color-extra-light-blue;
-            color: @color-extra-light-blue;
+            border-bottom: 2px solid @color-black;
+            color: @color-light-black;
             z-index: 100;
         } 
     }
@@ -49,8 +49,22 @@
 
             &.active {
                 border-bottom: none;
-                color: @color-white;
+                color: darken(@color-blue, 10%);
             }
+
+            .iconfont {
+                height: 1.2rem;
+                font-size: 1.2rem;
+                line-height: 1.2rem;
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+
+            .iconfont ~ .tab-label {
+                display: block;
+                font-size: 0.55rem;
+                position: relative;
+            }                      
         }
         
     }

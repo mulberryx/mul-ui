@@ -31,7 +31,7 @@
      -khtml-transition: all 0.1s linear;
        -moz-transition: all 0.1s linear;
          -o-transition: all 0.1s linear;
-            transition: all 0.1s linear;    
+            transition: all 0.1s linear;     
 }
 
 .ui-btn:hover {
@@ -83,9 +83,26 @@
 .ui-btn:hover .shine {left: 24px;}
 .ui-btn:active .shine {opacity: 0;}
 
-.ui-btn.ui-btn-info {background: @color-light-blue;}
-.ui-btn.ui-btn-success {background: @color-success;}
-.ui-btn.ui-btn-danger {background: @color-danger;}
+.ui-btn.ui-btn-info {
+    background: @color-light-blue; 
+    border: 1px solid darken(@color-light-blue, 10%);
+}
 
-.ui-btn.ui-btn-purple {background: #4b3f5e;}
-.ui-btn.ui-btn-orange {background: #624529;}
+.ui-btn.ui-btn-success {
+    background: @color-success; 
+    border: 1px solid darken(@color-success, 10%);
+}
+
+.ui-btn.ui-btn-danger {
+    background: @color-danger; 
+    border: 1px solid darken(@color-danger, 10%);
+}
+
+.ui-btn.ui-btn-purple {
+    background: #4b3f5e; 
+    border: 1px solid darken(#4b3f5e, 10%);
+}
+.ui-btn.ui-btn-orange {
+    background: #624529; 
+    border: 1px solid darken(#624529, 10%);
+}

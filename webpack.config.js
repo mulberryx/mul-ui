@@ -54,7 +54,11 @@ module.exports = {
             { 
                 test: /\.(png|jpg|gif)$/, 
                 loader: 'url-loader?limit=8192&name=./img/[hash].[ext]'
-            }
+            },
+            {
+                test: /\.(woff|woff2|ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                loader: 'file-loader?name=./iconfonts/[name].[ext]'                
+            }            
         ]
     },
     plugins: [

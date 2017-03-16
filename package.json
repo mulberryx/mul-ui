@@ -21,6 +21,7 @@
     "style-loader": "latest",
     "css-loader": "latest",
     "less-loader": "latest",
+    "file-loader": "latest",
     "html-loader": "latest",
     "babel-loader": "latest",
     "babel-core": "latest",

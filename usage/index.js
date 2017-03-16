@@ -192,8 +192,21 @@ let datepicker4 = new Calendar({
     }
 });
 
-$('#datepicker4').click(function (e) {
+$('#datepicker4_1').click(function (e) {
     datepicker4.open();
+    datepicker4.onChange = function (val) {
+        $('#datepicker4_1').val(val);
+    };
+
+    e.target.blur();
+});
+
+$('#datepicker4_2').click(function (e) {
+    datepicker4.open();
+    datepicker4.onChange = function (val) {
+        $('#datepicker4_2').val(val);
+    };
+    
     e.target.blur();
 });
 
