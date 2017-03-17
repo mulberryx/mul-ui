@@ -37,7 +37,7 @@ export default class Drop {
      * @returns none
      */
     init () {
-
+        
     }
 
     /**

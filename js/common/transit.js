@@ -118,9 +118,7 @@ class Transit {
             } catch (e) {
                 self.state = 'rejected';
                 self.animationFrame.cancel();
-                self.transiting = false;    
-                       
-                console.error(e);
+                self.transiting = false;
 
                 if (self.error && typeof self.error === 'function') {
                     self.error(e);
