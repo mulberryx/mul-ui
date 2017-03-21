@@ -12,7 +12,9 @@ class Mask {
      */
     constructor () {
         this.ele = $('<div class="ui-modal-mask"></div>');
-        this.ele.click(function () {
+
+        this.ele.on('touchstart', function (e) {
+            e.preventDefault();
             Tools.triggerEvent(EVENTS['ACTION:MASK:CLICK']);
         });
 

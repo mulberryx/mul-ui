@@ -53,15 +53,19 @@ class Modal {
 
         if (this.picker) {
             this.ele.addClass('picker');
+
+            tools.addEventListener(EVENTS['ACTION:MASK:CLICK'], function () {
+                if (self.isOpen) {
+                    self.close();
+                }
+            }); 
         }
 
-        tools.addEventListener(EVENTS['ACTION:MASK:CLICK'], function () {
-            if (self.isOpen) {
-                self.close();
-            }
+        this.ele.on('touchstart', function (e) {
+            e.preventDefault();
         });
 
-        this.ele.on('click', '[data-role=close]', function (e) {
+        this.ele.find('[data-role=close]').on('touchstart', function (e) {
             self.close();
         });
 

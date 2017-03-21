@@ -165,10 +165,6 @@ export default class Scroller {
                     self.transitObj.stop();
                 } else {
                     self.move(_offset, true);
-
-                    if (per >= 1 || coe < 0.0001) {
-                        self.transitObj.stop();
-                    }
                 }
             },            
             duration: duration, 

@@ -15,7 +15,7 @@ let easing = {
     }
 };
 
-// 基础easing
+// 运动描述函数
 let baseEasings = {
     Sine: function( p ) {
         return 1 - Math.cos( p * Math.PI / 2 );
@@ -33,7 +33,7 @@ let baseEasings = {
     Bounce: function( p ) {
         var pow2, bounce = 4;
 
-        while ( p < ( ( pow2 = Math.pow( 2, -- bounce ) ) - 1 ) / 11 ) {}
+        while ( p < (( pow2 = Math.pow( 2, -- bounce )) - 1 ) / 11 ) {}
         return 1 / Math.pow( 4, 3 - bounce ) - 7.5625 * Math.pow( ( pow2 * 3 - 2 ) / 22 - p, 2 );
     }
 };
@@ -51,17 +51,21 @@ for (var i = 0, len = grades.length; i < len; i ++) {
 
 // 根据基础easing生成easing
 for (var name in baseEasings) {
-    var easeIn = baseEasings[name];
+    var build = function () {
+        var easeIn = baseEasings[name];
 
-    easing[ "easeIn" + name ] = easeIn;
+        easing["easeIn" + name] = easeIn;
 
-    easing[ "easeOut" + name ] = function( p ) {
-        return 1 - easeIn( 1 - p );
+        easing["easeOut" + name] = function(p) {
+            return 1 - easeIn( 1 - p );
+        };
+
+        easing["easeInOut" + name] = function(p) {
+            return p < 0.5 ? easeIn( p * 2 ) / 2 : 1 - easeIn( p * -2 + 2 ) / 2;
+        };
     };
 
-    easing[ "easeInOut" + name ] = function( p ) {
-        return p < 0.5 ? easeIn( p * 2 ) / 2 : 1 - easeIn( p * -2 + 2 ) / 2;
-    };
+    build();
 }
 
 window.easing = easing;
@@ -93,10 +97,8 @@ class Transit {
 
         this.transiting = false;
 
-        let self = this;
-
         this.action = function () {
-            self.step(self.coefficient, this.percentage);
+            this.step(this.coefficient, this.percentage);
         };        
     }
 
@@ -125,8 +127,12 @@ class Transit {
                 }
             }
 
-            if (self.percentage < 1 && self.transiting) {
+            if (self.percentage <= 1 && self.transiting) {
                 self.animationFrame.request(_run);
+
+                if (self.percentage === 1) {
+                    self.stop();
+                }
             }
         };     
 

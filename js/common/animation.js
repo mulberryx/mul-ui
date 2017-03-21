@@ -21,13 +21,14 @@ class AnimationFrame {
      */      
     constructor () {
         this.lastTime = 0;
+        this.timer = null;
 
-        if (window.requestAnimationFrame) {
+        if (!window.requestAnimationFrame) {
             this.request = function (action) {
                 let currTime = new Date().getTime();
                 let timeToCall = Math.max(0, 16.667 - (currTime - this.lastTime));
 
-                this.id = window.setTimeout(function () {
+                this.timer = window.setTimeout(function () {
                     action();
                 }, timeToCall);
 
@@ -36,15 +37,15 @@ class AnimationFrame {
             
 
             this.cancel = function() {
-                clearTimeout(this.id);
+                clearTimeout(this.timer);
             };
         } else {
             this.request = function (action) {
-                this.id = window.requestAnimationFrame(action);
+                this.timer = window.requestAnimationFrame(action);
             };
 
             this.cancel = function () {
-                window.cancelAnimationFrame(this.id);
+                window.cancelAnimationFrame(this.timer);
             };
         }
     }
