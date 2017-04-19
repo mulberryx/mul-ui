@@ -7,23 +7,7 @@ let HtmlWebpackPlugin = require('html-webpack-plugin');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // 获取当前运行的模式
-var currentTarget = process.env.npm_lifecycle_event;
-
-var debug,          // 是否是调试
-    devServer,      // 是否是热更新模式
-    minimize;       // 是否需要压缩
-
-if (currentTarget == 'build') {
-    debug = false, 
-    devServer = false, 
-    minimize = true;
-} else if (currentTarget == 'develop') {
-    debug = true, 
-    devServer = true, 
-    minimize = false;
-};
-
-const ASSET_PATH = devServer ? '/dist' : './dist';
+let isProd = process.env.NODE_ENV === 'production';
 
 module.exports = {
     entry: {
@@ -35,9 +19,9 @@ module.exports = {
         'usage': './usage/index.js'
     },
     output: {
-        path: ASSET_PATH,
-        filename: devServer ? 'js/[name].js' : 'js/[name].min.js',
-        chunkFilename: devServer ? 'js/[name].js' : 'js/[name].min.js',
+        path: path.join(__dirname, 'dist'),
+        filename: isProd ? 'js/[name].min.js' : 'js/[name].js',
+        chunkFilename: isProd ? 'js/[name].min.js' : 'js/[name].js',
         publicPath: '/',
         libraryTarget: 'umd'
     },
@@ -62,23 +46,19 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-            // 全局debug标识
-            __DEV__: debug,
-        }),    
         new webpack.HotModuleReplacementPlugin({
             multiStep: true
         }),        
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor', 
-            filename: devServer ? 'vendor.bundle.js': 'vendor.bundle.min.js'
+            filename: isProd ? 'vendor.bundle.min.js' : 'vendor.bundle.js'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
         }),        
-        new ExtractTextPlugin(devServer ? 'css/[name].css' : 'css/[name].min.css'),
-        (devServer ? { apply: function() {} } : new webpack.optimize.UglifyJsPlugin({
+        new ExtractTextPlugin(isProd ? 'css/[name].min.css': 'css/[name].css'),
+        (!isProd  ? { apply: function() {} } : new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             },
