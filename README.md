@@ -1,3 +1,3 @@
-# mul-ui
+# mulb.ui
 simple ui repository
 
