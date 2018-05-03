@@ -2,7 +2,7 @@
  * 图组件
  * @author steudnera
  */
- 
+
 import Chart from './Chart'
 
 const charts = {}
