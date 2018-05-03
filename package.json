@@ -1,18 +1,29 @@
 {
-  "name": "mul-ui",
-  "version": "0.1.1",
-  "description": "simple mul-ui",
+  "name": "steudnera.ui",
+  "version": "0.0.1",
+  "description": "steudnera ui, simple ui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mulberryx/mul-ui.git"
+    "url": "https://github.com/mulberryx/steudnera.ui.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mulberryx/mul-ui/issues"
+    "url": "https://github.com/mulberryx/steudnera.ui/issues"
   },
-  "homepage": "https://github.com/mulberryx/mul-ui#readme",
+  "homepage": "https://github.com/mulberryx/steudnera.ui#readme",
+  "scripts": {
+    "start": "gulp -ws",
+    "build": "gulp build",
+    "build:prod": "gulp build:prod",
+    "test": "cross-env BABEL_ENV=test karma start test/karma.conf.js --single-run",
+    "lint": "eslint --ext .js src usage test/specs"
+  },
   "dependencies": {
+    "jquery": "latest"
+  },
+  "devDependencies": {
+    "cross-env": "latest",
     "autoprefixer": "latest",
     "browser-sync": "latest",
     "gulp": "latest",
@@ -32,11 +43,27 @@
     "gulp-plumber": "latest",
     "gulp-sequence": "latest",
     "http-proxy-middleware": "latest",
-    "yargs": "latest"
-  },
-  "scripts": {
-    "start": "gulp -ws",
-    "build": "gulp build:app",
-    "build:prod": "gulp build:app:prod"
+    "yargs": "latest",
+    "eslint": "latest",
+    "eslint-config-standard": "latest",
+    "eslint-friendly-formatter": "latest",
+    "eslint-plugin-html": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-node": "latest",
+    "eslint-plugin-promise": "latest",
+    "karma": "latest",
+    "karma-coverage": "latest",
+    "karma-mocha": "latest",
+    "karma-phantomjs-launcher": "latest",
+    "karma-phantomjs-shim": "latest",
+    "karma-sinon-chai": "latest",
+    "karma-sourcemap-loader": "latest",
+    "karma-spec-reporter": "latest",
+    "karma-webpack": "latest",
+    "mocha": "latest",
+    "chai": "latest",
+    "chalk": "latest",
+    "sinon": "latest",
+    "sinon-chai": "latest"
   }
 }
