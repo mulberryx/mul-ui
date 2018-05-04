@@ -1,7 +1,10 @@
-import Modal from './modal'
-import Picker from './picker'
-import Calendar from './calendar'
+import Modal from './modal';
+import Picker from './picker';
+import Calendar from './calendar';
 
-window.Modal = Modal
-window.Picker = Picker
-window.Calendar = Calendar
+import uiStyles from '../less/index.less';
+
+
+window.Modal = Modal;
+window.Picker = Picker;
+window.Calendar = Calendar;
