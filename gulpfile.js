@@ -1,6 +1,6 @@
 /**
  * gulpfile
- * @author steudnera
+ * @author Philip
  */
 
 const path = require("path")
