@@ -1,17 +1,17 @@
 {
-  "name": "steudnera.ui",
+  "name": "raddeana.ui",
   "version": "0.0.1",
-  "description": "steudnera ui, simple ui",
+  "description": "raddeana ui, simple ui",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mulberryx/steudnera.ui.git"
+    "url": "https://github.com/raddeana/raddeana.ui.git"
   },
   "keywords": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mulberryx/steudnera.ui/issues"
+    "url": "https://github.com/raddeana/raddeana.ui/issues"
   },
-  "homepage": "https://github.com/mulberryx/steudnera.ui#readme",
+  "homepage": "https://github.com/raddeana/raddeana.ui#readme",
   "scripts": {
     "start": "gulp -ws",
     "build": "gulp build",
